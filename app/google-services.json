@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "629581625655",
+    "project_id": "find-phone-by-clap-4afb8",
+    "storage_bucket": "find-phone-by-clap-4afb8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:629581625655:android:51b52e71d7d2bdd2ef42b2",
+        "android_client_info": {
+          "package_name": "com.phonefinder.findmyphone.clapflash"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBshGb0g13a0um7XBCTXoojo0t9_CmLq40"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
