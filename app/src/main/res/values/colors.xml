@@ -1,5 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="primary">#2563EB</color>
     <color name="black">#FF000000</color>
+    <color name="black_">#4D000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="appClr">#2563EB</color>
+
+    <color name="ad_bg">#EFF6FF</color>
+    <color name="dark_color">#141516</color>
+    <color name="light_Text">#777777</color>
+    <color name="light_yellow">#ADF8B475</color>
+    <color name="yellow">#FAFF00</color>
+    <color name="thumb">#F1F1F1</color>
+    <color name="light_gray">#A7A7A7</color>
+
+    <color name="colorText">#232323</color>
+    <color name="colorTextDem">#acacac</color>
+    <color name="colorLightIcon">#909694</color>
+    <color name="colorTextGreen">#12d591</color>
+    <color name="light_grey">#CCCCCC</color>
+    <color name="colorUnselected">#e6e6f8</color>
+    <color name="transparent">#00000000</color>
+    <color name="text_color_light">#909694</color>
+    <color name="shimmer_effect_color">#BFBDBD</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorThemeBlue">#2563EB</color>
+    <color name="color_ads_button">#108d0d</color>
+    <color name="colorTextDark">#171719</color>
+    <color name="translucentBlack">#77000000</color>
+    <color name="redColor">#FF0000</color>
+    <color name="home_rv_bg_ip">#EFF6FF</color>
+    <color name="blue">#3DA2FF</color>
+
+    <color name="purple_gradient_light">#60A5FA</color>
+    <color name="purple_gradient">#2563EB</color>
+    <color name="purple_dark">#1D4ED8</color>
+    <color name="purple_dark2">#1E40AF</color>
+    <color name="gray_white">#F5F5F5</color>
+
+    <color name="purple_2">#3B82F6</color>
+
+    <color name="gray_dark">#667085</color>
+    <color name="gray_text">#6D6D6D</color>
+    <color name="gray_color">#9A9A9A</color>
+    <color name="gray_light">#EBEBEB</color>
+    <color name="gray_card">#EAEAEA</color>
+    <color name="gray_icon">#949494</color>
+
+    <color name="textColor">#FF000000</color>
+    <color name="iconColor">#FF000000</color>
+    <color name="backColor">#F7FAFF</color>
+    <color name="cardClr">#FFFFFFFF</color>
+    <color name="ad_bg_color">#FAF0D2</color>
+    <color name="ad_border">#FAF6EA</color>
+    <color name="text_card_bg">#E0ECFF</color>
+    <color name="text_card_light_bg">#EFF5FF</color>
+
+    <color name="grayCard">#EFF4FF</color>
+    <color name="cyanCard">#0CCDAA</color>
+    <color name="cyanCardLight">#1A0CCDAA</color>
+    <color name="orangeCard">#F25702</color>
+    <color name="orangeCardLight">#1AF25702</color>
+    <color name="yellow_grediant">#FFB832</color>
+
+
+    <color name="orange">#FF9800</color>
+    <color name="purple">#3B82F6</color>
+    <color name="gray">#808080</color>
+
+
 </resources>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/home"
+        android:title="@string/home"
+        app:cnb_backgroundColor="@color/primary"
+        app:cnb_iconColor="@color/white"
+        app:cnb_textColor="@color/white"
+        />
+
+    <item
+        android:id="@+id/Sounds"
+        android:icon="@drawable/sounds"
+        android:title="@string/sounds"
+        app:cnb_backgroundColor="@color/primary"
+        app:cnb_iconColor="@color/white"
+        app:cnb_textColor="@color/white"
+        />
+    <item
+        android:id="@+id/add_sounds"
+        android:icon="@drawable/add_sounds"
+        android:title="@string/add_sounds"
+        app:cnb_iconColor="@color/white"
+        app:cnb_backgroundColor="@color/primary"
+        app:cnb_textColor="@color/white"
+    />
+
+</menu>

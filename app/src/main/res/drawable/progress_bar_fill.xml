@@ -1,0 +1,24 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Background -->
+    <item android:id="@android:id/background">
+        <shape>
+            <solid android:color="@color/gray_white"/>
+            <corners android:radius="50dp"/>
+        </shape>
+    </item>
+
+    <!-- Progress with horizontal gradient -->
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape>
+                <gradient
+                    android:startColor="#7F00FF"
+                    android:endColor="#B800D0"
+                    android:angle="0"/>
+                <corners android:radius="50dp"/>
+            </shape>
+        </clip>
+    </item>
+
+</layer-list>

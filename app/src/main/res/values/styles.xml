@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CustomDialog" parent="Theme.Material3.DayNight.Dialog">
+        <!-- No default title -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- Background dim when dialog shows -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.5</item>
+        <!-- Transparent background -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- Optional: rounded corners if your dialog view has background -->
+        <item name="android:windowIsFloating">true</item>
+    </style>
+    <style name="RoundedDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="android:windowMinWidthMajor">80%</item>
+        <item name="android:windowMinWidthMinor">80%</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+
+
+</resources>

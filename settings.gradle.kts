@@ -19,9 +19,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven(url = "https://jcenter.bintray.com")
+        maven(url = "https://jitpack.io")
     }
 }
-
 rootProject.name = "Find_Phone_Clap_Detector"
 include(":app")
- 

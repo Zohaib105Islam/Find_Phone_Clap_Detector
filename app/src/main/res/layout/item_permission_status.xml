@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_50sdp"
+    android:orientation="horizontal"
+    android:paddingHorizontal="@dimen/_20sdp"
+    android:layout_marginHorizontal="@dimen/_5sdp"
+    android:background="@drawable/border_bg"
+    android:layout_marginTop="@dimen/_5sdp"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/txtPermissionName"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_height="wrap_content"
+        android:text="Permission Name"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/_14sdp" />
+
+    <ImageView
+        android:id="@+id/imgPermissionStatus"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/icon_unchecked" />
+</LinearLayout>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.fragments.AddSoundsFragment">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/sounds_Rv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/create_sound_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:spanCount="3"
+            tools:listitem="@layout/layout_sounds_rv" />
+
+        <ImageView
+            android:id="@+id/nothingImg"
+            android:layout_width="@dimen/_130sdp"
+            android:layout_height="@dimen/_90sdp"
+            android:src="@drawable/no_sound_img"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/create_sound_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/create_sound_btn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/orange_bg"
+            android:backgroundTint="@color/primary"
+            android:layout_marginBottom="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_40sdp"
+            android:drawableLeft="@drawable/baseline_add_circle_24"
+            android:paddingStart="60dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="60dp"
+            android:paddingBottom="6dp"
+            android:text="@string/create_sound"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:layout_editor_absoluteX="26dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

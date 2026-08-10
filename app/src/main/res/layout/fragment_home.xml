@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:descendantFocusability="blocksDescendants"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:fillViewport="true"
+    android:overScrollMode="never"
+    tools:context=".ui.fragments.HomeFragment"
+    tools:ignore="contentDescription">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/llTopServices"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_100sdp"
+            android:layout_marginHorizontal="@dimen/_4sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:id="@+id/findPhoneCard"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_4sdp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/bgFindPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_94sdp"
+                    android:background="@drawable/ic_selected_card"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_8sdp">
+
+                    <ImageView
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:contentDescription="icon"
+                        android:src="@drawable/ic_clap" />
+
+                    <TextView
+                        android:id="@+id/tvFindPhone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_4sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:fontFamily="@font/inter_medium"
+                        android:gravity="center"
+                        android:maxLines="2"
+                        android:text="@string/find_phone_by_clap"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_9sdp" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/dontTouch"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_4sdp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/bgDontTouch"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_94sdp"
+                    android:background="@drawable/ic_unselected_card"
+                    android:gravity="center">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/clDontTouchProCard"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_33sdp"
+                        android:background="@drawable/free_trail_bg"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/tvDontTouchAttempts"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_2sdp"
+                            android:fontFamily="@font/inter_bold"
+                            android:gravity="end"
+                            android:maxLines="2"
+                            android:text="@string/free_trail"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_7sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <ImageView
+                        android:id="@+id/icDontTouch"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_marginBottom="@dimen/_8sdp"
+                        android:contentDescription="icon"
+                        android:src="@drawable/ic_dont_touch"
+                        app:layout_constraintBottom_toTopOf="@+id/tvDontTouch"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvDontTouch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_4sdp"
+                        android:layout_marginBottom="@dimen/_12sdp"
+                        android:fontFamily="@font/inter_medium"
+                        android:gravity="center"
+                        android:maxLines="2"
+                        android:text="@string/don_t_touch2"
+                        android:textColor="@color/gray_text"
+                        android:textSize="@dimen/_9sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/pocketMode"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_4sdp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/bgPocketMode"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_94sdp"
+                    android:background="@drawable/ic_unselected_card"
+                    android:gravity="center">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/clPocketModeProCard"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_33sdp"
+                        android:background="@drawable/free_trail_bg"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/tvPocketModeAttempts"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_2sdp"
+                            android:fontFamily="@font/inter_bold"
+                            android:gravity="end"
+                            android:maxLines="2"
+                            android:text="@string/free_trail"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_7sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <ImageView
+                        android:id="@+id/ivPocketMode"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_34sdp"
+                        android:contentDescription="icon"
+                        android:src="@drawable/ic_pocket_mode"
+                        app:layout_constraintBottom_toTopOf="@+id/tvPocketMode"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvPocketMode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_4sdp"
+                        android:layout_marginBottom="@dimen/_12sdp"
+                        android:fontFamily="@font/inter_medium"
+                        android:gravity="center"
+                        android:maxLines="2"
+                        android:text="@string/pocket_mode2"
+                        android:textColor="@color/gray_text"
+                        android:textSize="@dimen/_9sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/byWhistle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_4sdp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/bgByWhistle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_94sdp"
+                    android:background="@drawable/ic_unselected_card"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_8sdp">
+
+                    <ImageView
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:contentDescription="icon"
+                        android:src="@drawable/ic_whistle" />
+
+                    <TextView
+                        android:id="@+id/tvByWhistle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_4sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:fontFamily="@font/inter_medium"
+                        android:gravity="center"
+                        android:maxLines="2"
+                        android:text="@string/by_whistle2"
+                        android:textColor="@color/gray_text"
+                        android:textSize="@dimen/_9sdp" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvTapToActivate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/tap_to_activate"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_11sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/llTopServices" />
+
+
+        <View
+            android:id="@+id/viewLeft"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_110sdp"
+            android:background="@drawable/ic_left_wing"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTapToActivate"
+            app:layout_constraintWidth_percent="0.4" />
+
+        <View
+            android:id="@+id/viewRight"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_110sdp"
+            android:background="@drawable/ic_wing_right"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTapToActivate"
+            app:layout_constraintWidth_percent="0.4" />
+
+        <ImageView
+            android:id="@+id/disableView"
+            android:layout_width="@dimen/_110sdp"
+            android:layout_height="@dimen/_110sdp"
+            android:src="@drawable/btn_tap_to_on"
+            app:layout_constraintBottom_toBottomOf="@+id/viewLeft"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/viewLeft" />
+
+        <ImageView
+            android:id="@+id/enableView"
+            android:layout_width="@dimen/_110sdp"
+            android:layout_height="@dimen/_110sdp"
+            android:src="@drawable/btn_tap_to_off"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/viewLeft"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/viewLeft" />
+
+        <ImageView
+            android:id="@+id/enableViewHand"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="@dimen/_90sdp"
+            android:layout_marginStart="@dimen/_60sdp"
+            android:layout_marginTop="@dimen/_70sdp"
+            android:src="@drawable/ic_hand"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/enableView"
+            app:layout_constraintEnd_toEndOf="@+id/enableView"
+            app:layout_constraintStart_toStartOf="@+id/enableView"
+            app:layout_constraintTop_toTopOf="@+id/enableView" />
+
+        <FrameLayout
+            android:id="@+id/ad_frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/viewLeft">
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/shimmer_effect_color">
+
+                <include
+                    android:id="@+id/native_ad_view"
+                    layout="@layout/admob_native_media_small_layout_new"
+                    android:visibility="invisible" />
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/llSounds"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/_12sdp"
+            android:paddingEnd="@dimen/_12sdp"
+            android:weightSum="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ad_frame">
+
+            <LinearLayout
+                android:id="@+id/createSoundBtn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/_6sdp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_create_audio"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
+
+                <ImageView
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginBottom="@dimen/_4sdp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_record_audio" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_4sdp"
+                    android:fontFamily="@font/inter_semi_bold"
+                    android:text="@string/record_audio"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11sdp" />
+
+                <ImageView
+                    android:layout_width="@dimen/_13sdp"
+                    android:layout_height="@dimen/_13sdp"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_4sdp"
+                    android:src="@drawable/ic_sound_wave" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/importSoundsBtn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/_6sdp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_upload_sounds"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
+
+                <ImageView
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginBottom="@dimen/_4sdp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_upload_sound" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:fontFamily="@font/inter_semi_bold"
+                    android:text="@string/upload_sounds"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11sdp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_4sdp"
+                    android:text="@string/mp3_wav_m4a"
+                    android:textColor="@color/gray_color"
+                    android:textSize="@dimen/_10sdp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvChooseSounds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_4sdp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:text="@string/choose_sounds"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_13sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/llSounds" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/soundsRv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_4sdp"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvChooseSounds"
+            app:spanCount="3"
+            tools:listitem="@layout/layout_sounds_rv" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

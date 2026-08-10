@@ -1,0 +1,11 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+  <corners android:radius="16dp" /> <!-- Approximating rounded corners from vector -->
+
+  <gradient
+      android:type="linear"
+      android:angle="270"
+      android:startColor="#FFF57878"
+      android:endColor="#FFFF5E5E" />
+</shape>
