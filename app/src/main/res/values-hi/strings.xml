@@ -210,10 +210,12 @@
     <string name="please_wait2">कृपया प्रतीक्षा करें...</string>
     <string name="find_your_phone">अपना फ़ोन ढूँढें</string>
     <string name="by">द्वारा</string>
-    <string name="find_your_phone_with_a_clap">अपने फोन को खोजें\nएक ताली के साथ</string>
-    <string name="simply_clap_your_hands_and_your_phone_will_ring_instantly_no_searching_needed">बस हाथ ताली बजाएं और आपका फोन तुरंत\nबजेगा — खोजने की आवश्यकता नहीं।</string>
-    <string name="find_phone_via_whistle">फोन खोजें\nसीटी से</string>
-    <string name="just_whistle_and_your_phone_will_ring_instantly">बस सीटी बजाएं और आपका फोन तुरंत\nबजेगा।</string>
+    <string name="find_your_phone_with_a_clap">ताली बजाएँ और खोजें</string>
+    <string name="simply_clap_your_hands_and_your_phone_will_ring_instantly_no_searching_needed">अपना चुना हुआ अलर्ट चालू करने और सेकंडों में फोन खोजने के लिए एक बार ताली बजाएँ।</string>
+    <string name="onboarding_pocket_guard_title">पॉकेट और टच सुरक्षा</string>
+    <string name="onboarding_pocket_guard_description">अगर कोई आपका फोन हिलाए या जेब से निकाले, तो तुरंत अलर्ट पाएँ।</string>
+    <string name="find_phone_via_whistle">सीटी बजाएँ और खोजें</string>
+    <string name="just_whistle_and_your_phone_will_ring_instantly">अपनी चुनी हुई ध्वनि चालू करने और आसानी से फोन खोजने के लिए एक बार सीटी बजाएँ।</string>
     <string name="one_clap_find_your_phone2">एक ताली, अपने\nफोन को खोजें</string>
     <string name="just_clap_once_and_your_phone_will_ring_instantly">बस एक बार ताली बजाएं और आपका फोन\nतुरंत बजेगा।</string>
     <string name="find_my">मेरा खोजें</string>

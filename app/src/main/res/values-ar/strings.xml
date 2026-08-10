@@ -211,10 +211,12 @@
     <string name="please_wait2">الرجاء الانتظار...</string>
     <string name="find_your_phone">حدد موقع هاتفك</string>
     <string name="by">بواسطة</string>
-    <string name="find_your_phone_with_a_clap">اعثر على هاتفك\nبالتصفيق</string>
-    <string name="simply_clap_your_hands_and_your_phone_will_ring_instantly_no_searching_needed">فقط صفق بيديك وسيصدر هاتفك رنينًا\nعلى الفور — لا حاجة للبحث.</string>
-    <string name="find_phone_via_whistle">اعثر على الهاتف عبر\nالصفير</string>
-    <string name="just_whistle_and_your_phone_will_ring_instantly">فقط أصدر صفيرًا وسيصدر هاتفك رنينًا\nعلى الفور.</string>
+    <string name="find_your_phone_with_a_clap">صفّق للعثور عليه</string>
+    <string name="simply_clap_your_hands_and_your_phone_will_ring_instantly_no_searching_needed">صفّق مرة واحدة لتشغيل التنبيه الذي اخترته والعثور على هاتفك خلال ثوانٍ.</string>
+    <string name="onboarding_pocket_guard_title">حماية الجيب واللمس</string>
+    <string name="onboarding_pocket_guard_description">احصل على تنبيه فوري إذا حرّك أحد هاتفك أو أخرجه من جيبك.</string>
+    <string name="find_phone_via_whistle">صفّر واعثر عليه</string>
+    <string name="just_whistle_and_your_phone_will_ring_instantly">صفّر مرة واحدة لتشغيل الصوت الذي اخترته والعثور على هاتفك بسهولة.</string>
     <string name="one_clap_find_your_phone2">تصفيقة واحدة، اعثر على\nهاتفك</string>
     <string name="just_clap_once_and_your_phone_will_ring_instantly">فقط صفق مرة واحدة وسيصدر هاتفك\nرنينًا على الفور.</string>
     <string name="find_my">اعثر على</string>

@@ -11,10 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.gms.ads.AdSize
 import com.base.find_phone_clap_detector.R
 import com.base.find_phone_clap_detector.databinding.ActivityOnBoardingBinding
 import com.base.find_phone_clap_detector.managers.AnalyticsManager
@@ -23,9 +20,6 @@ import com.base.find_phone_clap_detector.myApplication.MyApplication
 import com.base.find_phone_clap_detector.ui.adapters.ScreenSlidePagerAdapter
 import com.base.find_phone_clap_detector.utils.Constants.NUMBER_OF_ON_BOARDING_SLIDER
 import com.base.find_phone_clap_detector.utils.LocaleHelper
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.seconds
 
 class OnBoardingActivity : AppCompatActivity() {
 
@@ -52,20 +46,12 @@ class OnBoardingActivity : AppCompatActivity() {
         screenSlidePagerAdapter = ScreenSlidePagerAdapter(this)
         binding.onBoardingViewPager.adapter = screenSlidePagerAdapter
 
-        lifecycleScope.launch {
-            delay(3.seconds)
-            binding.pbNext.isVisible = false
-            binding.ivNext.isVisible = true
-        }
-
         addDots()
-        addTopDots()
-        loadAds()
         initClicks()
 
         // Select first dot initially
         selectDot(0)
-        selectTopDot(0)
+        updateActionButton(0)
     }
 
     private fun setupInsets() {
@@ -87,18 +73,12 @@ class OnBoardingActivity : AppCompatActivity() {
     }
 
     private fun initClicks() {
-        binding.getStarted.setOnClickListener {
-            AnalyticsManager.logEvent("FA_onboarding_get_started")
-            startMainActivity()
-        }
-
         binding.btnNext.setOnClickListener {
-            if (binding.pbNext.isVisible) return@setOnClickListener
             val nextItem = binding.onBoardingViewPager.currentItem + 1
             if (nextItem < NUMBER_OF_ON_BOARDING_SLIDER) {
                 binding.onBoardingViewPager.currentItem = nextItem
             } else {
-                AnalyticsManager.logEvent("FA_onboarding_last_get_started")
+                AnalyticsManager.logEvent("FA_onboarding_get_started")
                 startMainActivity()
             }
         }
@@ -119,15 +99,16 @@ class OnBoardingActivity : AppCompatActivity() {
     private fun addDots() {
         dots = ArrayList()
         val dotsLayout = binding.dots
+        val dotSpacing = (4 * resources.displayMetrics.density).toInt()
         dotsLayout.removeAllViews()
         for (i in 0 until NUMBER_OF_ON_BOARDING_SLIDER) {
             val dot = ImageView(this)
-            dot.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.tab_indicator_default))
+            dot.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.onboarding_indicator_inactive))
             val params = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            params.setMargins(0, 0, 15, 0)
+            params.marginEnd = dotSpacing
             dotsLayout.addView(dot, params)
             dots.add(dot)
         }
@@ -136,65 +117,30 @@ class OnBoardingActivity : AppCompatActivity() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 selectDot(position)
-                selectTopDot(position)
-
-                if (position == NUMBER_OF_ON_BOARDING_SLIDER - 1) {
-                    // Last page → show Get Started and top dots
-                    binding.getStarted.visibility = View.VISIBLE
-                    binding.dotsTop.visibility = View.VISIBLE
-
-                    // Hide Next button and bottom dots
-                    binding.btnNext.visibility = View.GONE
-                    binding.dots.visibility = View.GONE
-                } else {
-                    // Not last page → show Next and bottom dots
-                    binding.getStarted.visibility = View.GONE
-                    binding.dotsTop.visibility = View.GONE
-
-                    binding.btnNext.visibility = View.VISIBLE
-                    binding.dots.visibility = View.VISIBLE
-                }
+                updateActionButton(position)
             }
         })
     }
 
-    private fun addTopDots() {
-        binding.dotsTop.removeAllViews()
-        for (i in 0 until NUMBER_OF_ON_BOARDING_SLIDER) {
-            val dot = ImageView(this)
-            dot.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.tab_indicator_default))
-            val params = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            params.setMargins(0, 0, 15, 0)
-            binding.dotsTop.addView(dot, params)
-        }
-    }
-
     private fun selectDot(idx: Int) {
         for (i in 0 until NUMBER_OF_ON_BOARDING_SLIDER) {
-            val drawableId = if (i == idx) R.drawable.tab_indicator_selected else R.drawable.tab_indicator_default
+            val drawableId = if (i == idx) {
+                R.drawable.onboarding_indicator_active
+            } else {
+                R.drawable.onboarding_indicator_inactive
+            }
             dots[i].setImageDrawable(ContextCompat.getDrawable(this, drawableId))
         }
     }
 
-    private fun selectTopDot(idx: Int) {
-        for (i in 0 until NUMBER_OF_ON_BOARDING_SLIDER) {
-            val drawableId = if (i == idx) R.drawable.tab_indicator_selected else R.drawable.tab_indicator_default
-            (binding.dotsTop.getChildAt(i) as ImageView).setImageDrawable(
-                ContextCompat.getDrawable(this, drawableId)
-            )
-        }
-    }
-
-    private fun loadAds() {
-        MyApplication.mInstance.adsManager.showBanner(
-            this,
-            AdSize.MEDIUM_RECTANGLE,
-            binding.adFrame,
-            this.getString(R.string.ADMOB_BANNER_MEDIUM_RECTANGLE_V2),
-            binding.shimmerLayout
+    private fun updateActionButton(position: Int) {
+        binding.tvNext.setText(
+            if (position == NUMBER_OF_ON_BOARDING_SLIDER - 1) {
+                R.string.get_started
+            } else {
+                R.string.next
+            }
         )
     }
+
 }

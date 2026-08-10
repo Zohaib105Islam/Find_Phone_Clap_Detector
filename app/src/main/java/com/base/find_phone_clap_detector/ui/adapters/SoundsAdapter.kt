@@ -2,67 +2,73 @@ package com.base.find_phone_clap_detector.ui.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.base.find_phone_clap_detector.R
+import com.base.find_phone_clap_detector.databinding.LayoutHomeSoundItemBinding
 import com.base.find_phone_clap_detector.databinding.LayoutSoundsRvBinding
 import com.base.find_phone_clap_detector.ui.dataClasses.SoundsDataClass
 import com.base.find_phone_clap_detector.ui.interfaces.SoundInterface
 import com.base.find_phone_clap_detector.utils.disableMultipleClicking
+import com.bumptech.glide.Glide
 
 class SoundsAdapter(
     private val context: Context,
     private var soundsList: ArrayList<SoundsDataClass>,
     private var selectorValue: Int,
-    val soundInterface: SoundInterface
-) : RecyclerView.Adapter<SoundsAdapter.MyHolder>() {
+    private val soundInterface: SoundInterface,
+    private val useHomeCircularStyle: Boolean = false
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    class MyHolder(val binding: LayoutSoundsRvBinding) :
-        RecyclerView.ViewHolder(binding.root)
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyHolder {
-        return MyHolder(
-            LayoutSoundsRvBinding.inflate(
-                LayoutInflater.from(context),
-                parent,
-                false
-            )
-        )
+    companion object {
+        private const val VIEW_TYPE_DEFAULT = 0
+        private const val VIEW_TYPE_HOME_CIRCULAR = 1
     }
 
-    override fun onBindViewHolder(holder: MyHolder, position: Int) {
+    class DefaultHolder(val binding: LayoutSoundsRvBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
-        val item = soundsList[position]
+    class HomeCircularHolder(val binding: LayoutHomeSoundItemBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
-        holder.binding.soundTv.text = item.title
+    override fun getItemViewType(position: Int): Int {
+        return if (useHomeCircularStyle) VIEW_TYPE_HOME_CIRCULAR else VIEW_TYPE_DEFAULT
+    }
 
-        // Load image
-        try {
-            Glide.with(context)
-                .asBitmap()
-                .load(item.img)
-                .into(holder.binding.soundImage)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        // Set background based on selection
-        if (position == selectorValue) {
-            holder.binding.clMain.setBackgroundResource(R.drawable.bg_sound_selected)
-            holder.binding.ivSelectedDot.visibility = android.view.View.VISIBLE
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return if (viewType == VIEW_TYPE_HOME_CIRCULAR) {
+            HomeCircularHolder(
+                LayoutHomeSoundItemBinding.inflate(
+                    LayoutInflater.from(context),
+                    parent,
+                    false
+                )
+            )
         } else {
-            holder.binding.clMain.setBackgroundResource(R.drawable.bg_sound_unselected)
-            holder.binding.ivSelectedDot.visibility = android.view.View.GONE
+            DefaultHolder(
+                LayoutSoundsRvBinding.inflate(
+                    LayoutInflater.from(context),
+                    parent,
+                    false
+                )
+            )
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val item = soundsList[position]
+        val selected = position == selectorValue
+
+        when (holder) {
+            is HomeCircularHolder -> bindHomeCircularItem(holder, item, selected)
+            is DefaultHolder -> bindDefaultItem(holder, item, selected)
         }
 
         holder.itemView.setOnClickListener {
-
             it.disableMultipleClicking(1000)
 
-            // Always get updated position safely
             val adapterPosition = holder.bindingAdapterPosition
-
             if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
 
             val previousSelection = selectorValue
@@ -73,7 +79,6 @@ class SoundsAdapter(
             notifyItemChanged(selectorValue)
 
             val clickedItem = soundsList[adapterPosition]
-
             soundInterface.clickOnSoundListener(
                 adapterPosition,
                 clickedItem.isPremium,
@@ -81,6 +86,55 @@ class SoundsAdapter(
                 clickedItem.title,
                 clickedItem.audioUri
             )
+        }
+    }
+
+    private fun bindHomeCircularItem(
+        holder: HomeCircularHolder,
+        item: SoundsDataClass,
+        selected: Boolean
+    ) {
+        holder.binding.soundTv.text = item.title
+        loadImage(item, holder.binding.soundImage)
+
+        holder.binding.circleContainer.setBackgroundResource(
+            if (selected) {
+                R.drawable.home_sound_circle_selected
+            } else {
+                R.drawable.home_sound_circle_unselected
+            }
+        )
+        holder.binding.ivSelectedDot.visibility = if (selected) View.VISIBLE else View.GONE
+        holder.binding.soundTv.setTextColor(
+            context.getColor(if (selected) R.color.primary else R.color.colorTextDark)
+        )
+    }
+
+    private fun bindDefaultItem(
+        holder: DefaultHolder,
+        item: SoundsDataClass,
+        selected: Boolean
+    ) {
+        holder.binding.soundTv.text = item.title
+        loadImage(item, holder.binding.soundImage)
+
+        if (selected) {
+            holder.binding.clMain.setBackgroundResource(R.drawable.bg_sound_selected)
+            holder.binding.ivSelectedDot.visibility = View.VISIBLE
+        } else {
+            holder.binding.clMain.setBackgroundResource(R.drawable.bg_sound_unselected)
+            holder.binding.ivSelectedDot.visibility = View.GONE
+        }
+    }
+
+    private fun loadImage(item: SoundsDataClass, imageView: android.widget.ImageView) {
+        try {
+            Glide.with(context)
+                .asBitmap()
+                .load(item.img)
+                .into(imageView)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -92,7 +146,11 @@ class SoundsAdapter(
         val oldPosition = selectorValue
         selectorValue = newPosition
 
-        notifyItemChanged(oldPosition)
-        notifyItemChanged(selectorValue)
+        if (oldPosition >= 0) {
+            notifyItemChanged(oldPosition)
+        }
+        if (selectorValue >= 0) {
+            notifyItemChanged(selectorValue)
+        }
     }
 }

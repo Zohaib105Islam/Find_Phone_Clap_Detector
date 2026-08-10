@@ -54,4 +54,13 @@
     <color name="ad_border">#FAF6EA</color>
     <color name="text_card_bg">#1E3A66</color>
     <color name="text_card_light_bg">#1E293B</color>
+
+    <!-- Sound preview redesign -->
+    <color name="sound_preview_surface">#172554</color>
+    <color name="sound_preview_surface_alt">#1E293B</color>
+    <color name="sound_preview_text">#F8FAFC</color>
+    <color name="sound_preview_muted">#AFC0DA</color>
+    <color name="sound_preview_outline">#334A70</color>
+    <color name="sound_preview_chip_inactive">#243B61</color>
+    <color name="sound_preview_track_off">#42577A</color>
 </resources>

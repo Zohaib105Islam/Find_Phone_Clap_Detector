@@ -23,11 +23,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.base.find_phone_clap_detector.R
 import com.base.find_phone_clap_detector.databinding.ActivitySoundPreviewBinding
-import com.base.find_phone_clap_detector.managers.AdsManager
 import com.base.find_phone_clap_detector.managers.PreferenceManager
 import com.base.find_phone_clap_detector.myApplication.MyApplication
 import com.base.find_phone_clap_detector.ui.dataClasses.SoundsDataClass
-import com.base.find_phone_clap_detector.utils.AdsCounter.isAppPremium
 import com.base.find_phone_clap_detector.utils.AudioPermissionUtil
 import com.base.find_phone_clap_detector.utils.Constants
 import com.base.find_phone_clap_detector.utils.DetectorWorkerStarter
@@ -37,7 +35,6 @@ import com.base.find_phone_clap_detector.utils.NotificationPermissionUtil
 import com.base.find_phone_clap_detector.utils.SeekArc
 import com.base.find_phone_clap_detector.utils.SoundsPreviewCarousel
 import com.base.find_phone_clap_detector.utils.TinyDB
-import com.base.find_phone_clap_detector.utils.Utils
 import com.base.find_phone_clap_detector.utils.disableMultipleClicking
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -54,7 +51,6 @@ class SoundPreviewActivity : AppCompatActivity() {
 
     private var soundsArrayList = arrayListOf<SoundsDataClass>()
     private var selectedSoundPosition = 0
-    private var isSelectedSoundPremium = false
     private var selectedSoundUri: String? = null
 
     private lateinit var audioPermissionUtil: AudioPermissionUtil
@@ -97,20 +93,9 @@ class SoundPreviewActivity : AppCompatActivity() {
         tinyDB = TinyDB(this)
         job = Job()
 
-        LoadAd()
         apiArgs()
         initViews()
         initComposeList()
-    }
-
-    private fun LoadAd() {
-        MyApplication.mInstance.adsManager.loadNativeAd(
-            this,
-            binding.adFrame,
-            AdsManager.NativeAdType.MEDIA_SMALL_NEW,
-            this.getString(R.string.ADMOB_NATIVE_WITHOUT_MEDIA_V2),
-            binding.shimmerLayout
-        )
     }
 
     private fun apiArgs() {
@@ -128,14 +113,10 @@ class SoundPreviewActivity : AppCompatActivity() {
             playNewSelectedSound(selectedSoundUri)
         }
 
-        // binding.title.text = title.toString()
-        binding.circleImageView.setImageResource(img)
-
-        if (!isFromCreateSound) {
-            if (selectedSoundPosition > 2) {
-                isSelectedSoundPremium = true
-            }
-        }
+        binding.currentSoundName.text = title ?: getString(R.string.preview_sound)
+        binding.circleImageView.setImageResource(
+            if (img != 0) img else R.drawable.ic_record_audio
+        )
 
     }
 
@@ -177,7 +158,7 @@ class SoundPreviewActivity : AppCompatActivity() {
                     SoundsDataClass(
                         getString(R.string.whistlee),
                         R.drawable.ic_whistle2,
-                        true,
+                        false,
                         Uri.parse("android.resource://" + packageName + "/" + R.raw.whistle_sound)
                             .toString()
                     )
@@ -186,7 +167,7 @@ class SoundPreviewActivity : AppCompatActivity() {
                     SoundsDataClass(
                         getString(R.string.door_bell),
                         R.drawable.ic_door_bell,
-                        true,
+                        false,
                         Uri.parse("android.resource://" + packageName + "/" + R.raw.doorbell_sound)
                             .toString()
                     )
@@ -196,7 +177,7 @@ class SoundPreviewActivity : AppCompatActivity() {
                     SoundsDataClass(
                         getString(R.string.car_horn),
                         R.drawable.ic_car_horn,
-                        true,
+                        false,
                         Uri.parse("android.resource://" + packageName + "/" + R.raw.car_horn_sound)
                             .toString()
                     )
@@ -205,7 +186,7 @@ class SoundPreviewActivity : AppCompatActivity() {
                     SoundsDataClass(
                         getString(R.string.hello),
                         R.drawable.ic_robot,
-                        true,
+                        false,
                         Uri.parse("android.resource://" + packageName + "/" + R.raw.hello_sound)
                             .toString()
                     )
@@ -214,7 +195,7 @@ class SoundPreviewActivity : AppCompatActivity() {
                     SoundsDataClass(
                         getString(R.string.party_horn),
                         R.drawable.ic_party_horn,
-                        true,
+                        false,
                         Uri.parse("android.resource://" + packageName + "/" + R.raw.party_sound)
                             .toString()
                     )
@@ -223,7 +204,7 @@ class SoundPreviewActivity : AppCompatActivity() {
                     SoundsDataClass(
                         getString(R.string.police_horn),
                         R.drawable.ic_police_whistle,
-                        true,
+                        false,
                         Uri.parse("android.resource://" + packageName + "/" + R.raw.police_sound)
                             .toString()
                     )
@@ -234,14 +215,16 @@ class SoundPreviewActivity : AppCompatActivity() {
 
         binding.composeCarousel.setContent {
             SoundsPreviewCarousel(
-                isFromAudio = isFromCreateSound,
                 sounds = soundsArrayList,
                 initialSelectedIndex = selectedSoundPosition,
                 onItemSelected = { soundItem ->
 
                     // Save new selected URI
                     selectedSoundUri = soundItem.audioUri
-                    isSelectedSoundPremium = soundItem.isPremium
+                    binding.currentSoundName.text = soundItem.title
+                    binding.circleImageView.setImageResource(
+                        if (soundItem.img != 0) soundItem.img else R.drawable.ic_record_audio
+                    )
 
                     // Stop previous audio
                     stopCurrentMedia()
@@ -373,23 +356,21 @@ class SoundPreviewActivity : AppCompatActivity() {
 
     private fun setToggleColor(toggle: androidx.appcompat.widget.SwitchCompat) {
 
-        val purple = ContextCompat.getColor(this, R.color.purple_dark)
-        val gray = ContextCompat.getColor(this, R.color.gray_light)
+        val selectedBlue = ContextCompat.getColor(this, R.color.primary)
+        val unselectedBlue = ContextCompat.getColor(this, R.color.sound_preview_track_off)
         val white = ContextCompat.getColor(this, R.color.white)
 
-        // Track color changes
         toggle.trackTintList = android.content.res.ColorStateList(
             arrayOf(
-                intArrayOf(android.R.attr.state_checked),   // ON
-                intArrayOf()                                // OFF
+                intArrayOf(android.R.attr.state_checked),
+                intArrayOf()
             ),
             intArrayOf(
-                purple,   // ON = purple track
-                gray      // OFF = gray track
+                selectedBlue,
+                unselectedBlue
             )
         )
 
-        // Thumb stays WHITE always
         toggle.thumbTintList = android.content.res.ColorStateList.valueOf(white)
     }
 
@@ -454,15 +435,18 @@ class SoundPreviewActivity : AppCompatActivity() {
         cards.forEach { card ->
 
             card.setCardBackgroundColor(
-                ContextCompat.getColor(this, R.color.gray_light)
+                ContextCompat.getColor(this, R.color.sound_preview_chip_inactive)
             )
+            card.cardElevation = 0f
+            card.scaleX = 1f
+            card.scaleY = 1f
 
             when (card.id) {
 
                 R.id.cvLoopToggle -> {
                     val img = card.getChildAt(0) as ImageView
                     img.setColorFilter(
-                        ContextCompat.getColor(this, R.color.black),
+                        ContextCompat.getColor(this, R.color.sound_preview_text),
                         android.graphics.PorterDuff.Mode.SRC_IN
                     )
                 }
@@ -470,7 +454,7 @@ class SoundPreviewActivity : AppCompatActivity() {
                 else -> {
                     val tv = card.getChildAt(0) as TextView
                     tv.setTextColor(
-                        ContextCompat.getColor(this, R.color.black)
+                        ContextCompat.getColor(this, R.color.sound_preview_text)
                     )
                 }
             }
@@ -480,8 +464,11 @@ class SoundPreviewActivity : AppCompatActivity() {
     private fun highlightCard(card: androidx.cardview.widget.CardView) {
 
         card.setCardBackgroundColor(
-            ContextCompat.getColor(this, R.color.purple_dark)
+            ContextCompat.getColor(this, R.color.primary)
         )
+        card.cardElevation = 5f * resources.displayMetrics.density
+        card.scaleX = 1.04f
+        card.scaleY = 1.04f
 
         when (card.id) {
 
@@ -503,27 +490,7 @@ class SoundPreviewActivity : AppCompatActivity() {
     }
 
     private fun handleApplySoundLogic() {
-
-        if (isAppPremium()) {
-            applySound()
-        } else {
-            if (isSelectedSoundPremium && !isFromCreateSound) {
-                Utils.watchAdOrBuyPremium(
-                    this,
-                    onBuyPremium = {
-                        startActivity(
-                            Intent(
-                                this,
-                                PremiumScreenActivity::class.java
-                            )
-                        )
-                    }) { // after watch ad
-                    applySound()
-                }
-            } else {
-                applySound()
-            }
-        }
+        applySound()
     }
 
     private fun applySound() {

@@ -1,6 +1,5 @@
 package com.base.find_phone_clap_detector.utils
 
-import android.util.Log
 import android.util.TypedValue
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -8,6 +7,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,7 +18,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,199 +28,169 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
-import androidx.constraintlayout.compose.ConstraintLayout
 import com.base.find_phone_clap_detector.R
 import com.base.find_phone_clap_detector.ui.dataClasses.SoundsDataClass
-import com.base.find_phone_clap_detector.utils.AdsCounter.isAppPremium
-import kotlin.math.absoluteValue
 
 @Composable
 fun SoundsPreviewCarousel(
-    isFromAudio: Boolean,
     sounds: List<SoundsDataClass>,
     initialSelectedIndex: Int = 0,
     onItemSelected: (SoundsDataClass) -> Unit
 ) {
-    val listState = rememberLazyListState()
-    var selectedItem by remember { mutableIntStateOf(initialSelectedIndex) }
-
-    val density = LocalDensity.current
-    val screenWidthPx = with(density) {
-        LocalConfiguration.current.screenWidthDp.dp.toPx()
+    val safeInitialIndex = if (sounds.isEmpty()) {
+        0
+    } else {
+        initialSelectedIndex.coerceIn(0, sounds.lastIndex)
     }
+    val listState = rememberLazyListState(initialFirstVisibleItemIndex = safeInitialIndex)
+    var selectedItem by remember { mutableIntStateOf(safeInitialIndex) }
 
-    val itemWidth = 140.dp
-    val itemWidthPx = with(density) { itemWidth.toPx() }
+    val selectedBlue = colorResource(id = R.color.primary)
+    val selectedBackground = colorResource(id = R.color.text_card_bg)
+    val unselectedBackground = colorResource(id = R.color.sound_preview_surface)
+    val unselectedBorder = colorResource(id = R.color.sound_preview_outline)
+    val selectedText = colorResource(id = R.color.primary)
+    val unselectedText = colorResource(id = R.color.sound_preview_text)
+    val badgeStart = colorResource(id = R.color.purple_dark)
+    val badgeEnd = colorResource(id = R.color.purple_gradient_light)
 
-    Box(
+    LazyRow(
+        state = listState,
         modifier = Modifier
             .fillMaxWidth()
-            .height(180.dp)
-            .clipToBounds()
+            .height(160.dp),
+        contentPadding = PaddingValues(horizontal = 18.dp, vertical = 10.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
+        itemsIndexed(sounds) { index, sound ->
+            val isSelected = index == selectedItem
 
-        LazyRow(
-            state = listState,
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(horizontal = 0.dp),
-            horizontalArrangement = Arrangement.spacedBy((-30).dp)
-        ) {
-            itemsIndexed(sounds) { index, sound ->
-
-                val offsetFromCenter = (index - selectedItem).toFloat()
-                val distance = offsetFromCenter.absoluteValue
-
-                val scale = (1f - (distance * 0.2f)).coerceIn(0.7f, 1f)
-                val zIndexValue = 1f - (distance * 0.1f)
-
+            Column(
+                modifier = Modifier
+                    .width(102.dp)
+                    .scale(if (isSelected) 1f else 0.96f)
+                    .clickable {
+                        selectedItem = index
+                        onItemSelected(sound)
+                    },
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Box(
                     modifier = Modifier
-                        .width(itemWidth)
-                        .scale(scale)
-                        .zIndex(zIndexValue)
-                        .clickable {
-                            selectedItem = index
-                            onItemSelected(sound)
-                        },
+                        .size(86.dp),
                     contentAlignment = Alignment.Center
                 ) {
+                    val context = LocalContext.current
+                    val safeResId = remember(sound.img) {
+                        if (sound.img == 0) {
+                            R.drawable.ic_record_audio
+                        } else {
+                            try {
+                                val resourceType = context.resources.getResourceTypeName(sound.img)
+                                val typedValue = TypedValue()
+                                context.resources.getValue(sound.img, typedValue, true)
+                                val resourcePath = typedValue.string?.toString()?.lowercase().orEmpty()
+                                val isBitmapDrawable = resourceType == "drawable" &&
+                                    (resourcePath.endsWith(".png") ||
+                                        resourcePath.endsWith(".jpg") ||
+                                        resourcePath.endsWith(".jpeg") ||
+                                        resourcePath.endsWith(".webp"))
 
-                    // MAIN CARD
-                    Box(
-                        modifier = Modifier
-                            .height(140.dp)
-                            .padding(2.dp)
-                            .border(
-                                width = 1.dp,
-                                color = if (index == selectedItem)
-                                    Color(0xFFBA76FF)
-                                else Color(0xFFE4E4E4),
-                                shape = RoundedCornerShape(12.dp)
-                            )
-                            .background(
-                                color = if (index == selectedItem)
-                                    Color(0xFFF3E8FF)
-                                else Color.White,
-                                shape = RoundedCornerShape(12.dp)
-                            )
-                            .padding(4.dp)
-                    ) {
-
-                        ConstraintLayout(
-                            modifier = Modifier.fillMaxSize()
-                        ) {
-
-                            val (imgSound, txtTitle, premiumBadge) = createRefs()
-
-                            // PREMIUM BADGE (top-left)
-                            if (sound.isPremium) {
-                                if (!isAppPremium()) {
-                                    if (!isFromAudio) {
-                                        Image(
-                                            painter = painterResource(id = R.drawable.crown),
-                                            contentDescription = "Premium",
-                                            modifier = Modifier
-                                                .size(28.dp)
-                                                .graphicsLayer { scaleX = -1f }
-                                                .constrainAs(premiumBadge) {
-                                                    top.linkTo(parent.top)
-                                                    start.linkTo(parent.start)
-                                                }
-                                        )
-                                    }
-                                }
+                                if (isBitmapDrawable) sound.img else R.drawable.ic_record_audio
+                            } catch (_: Exception) {
+                                R.drawable.ic_record_audio
                             }
-
-                            val context = androidx.compose.ui.platform.LocalContext.current
-
-                            val safeResId = remember(sound.img) {
-                                if (sound.img != 0) {
-                                    try {
-                                        val resourceName = context.resources.getResourceEntryName(sound.img)
-                                        val resourceType = context.resources.getResourceTypeName(sound.img)
-                                        Log.d("CCC", "Name of drawable is: ${sound.img} and default : ${R.drawable.ic_record_audio}")
-
-                                        // Check if the resource is an image type (png, jpg/jpeg, webp)
-                                        val isImageDrawable = if (resourceType == "drawable") {
-                                            val typedValue = TypedValue()
-                                            context.resources.getValue(sound.img, typedValue, true)
-                                            val resourcePath = typedValue.string?.toString()?.lowercase() ?: ""
-                                            resourcePath.endsWith(".png") ||
-                                                    resourcePath.endsWith(".jpg") ||
-                                                    resourcePath.endsWith(".jpeg") ||
-                                                    resourcePath.endsWith(".webp")
-                                        } else {
-                                            false
-                                        }
-
-                                        if (isImageDrawable) sound.img else R.drawable.ic_record_audio
-                                    } catch (e: Exception) {
-                                        R.drawable.ic_record_audio
-                                    }
-                                } else {
-                                    R.drawable.ic_record_audio
-                                }
-                            }
-
-                            Image(
-                                painter = painterResource(id = safeResId),
-                                contentDescription = sound.title,
-                                contentScale = ContentScale.Fit,
-                                modifier = Modifier
-                                    .size(50.dp)
-                                    .constrainAs(imgSound) {
-                                        top.linkTo(parent.top, margin = 16.dp)
-                                        start.linkTo(parent.start)
-                                        end.linkTo(parent.end)
-                                    }
-                            )
-
-                            Text(
-                                text = sound.title,
-                                fontSize = 14.sp,
-                                maxLines = 1,
-                                modifier = Modifier.constrainAs(txtTitle) {
-                                    top.linkTo(imgSound.bottom, margin = 4.dp)
-                                    start.linkTo(parent.start, margin = 6.dp)
-                                    end.linkTo(parent.end, margin = 6.dp)
-                                }
-                            )
                         }
                     }
 
-                    // SELECTED DOT
-                    if (index == selectedItem) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .shadow(
+                                elevation = if (isSelected) 8.dp else 1.dp,
+                                shape = CircleShape,
+                                clip = false
+                            )
+                            .background(
+                                color = if (isSelected) selectedBackground else unselectedBackground,
+                                shape = CircleShape
+                            )
+                            .border(
+                                width = if (isSelected) 3.dp else 1.dp,
+                                color = if (isSelected) selectedBlue else unselectedBorder,
+                                shape = CircleShape
+                            )
+                            .padding(10.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
                         Image(
-                            painter = painterResource(id = R.drawable.ic_selected_dot),
-                            contentDescription = null,
+                            painter = painterResource(id = safeResId),
+                            contentDescription = sound.title,
+                            contentScale = ContentScale.Fit,
+                            modifier = Modifier.size(if (isSelected) 52.dp else 47.dp)
+                        )
+                    }
+
+                    if (isSelected) {
+                        Box(
                             modifier = Modifier
                                 .size(18.dp)
                                 .align(Alignment.TopEnd)
-                                .zIndex(10f)
-                        )
+                                .background(
+                                    brush = Brush.linearGradient(
+                                        colors = listOf(badgeStart, badgeEnd)
+                                    ),
+                                    shape = CircleShape
+                                )
+                                .border(2.dp, Color.White, CircleShape),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.baseline_check_24),
+                                contentDescription = null,
+                                colorFilter = ColorFilter.tint(Color.White),
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(3.dp)
+                            )
+                        }
                     }
                 }
+
+                Text(
+                    text = sound.title,
+                    color = if (isSelected) selectedText else unselectedText,
+                    fontSize = 12.sp,
+                    fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp, start = 3.dp, end = 3.dp)
+                )
             }
         }
     }
 
-
-    LaunchedEffect(selectedItem) {
-        val centerOffset = (screenWidthPx / 2 - itemWidthPx / 2).toInt()
-        listState.animateScrollToItem(
-            index = selectedItem,
-            scrollOffset = -centerOffset
-        )
+    LaunchedEffect(selectedItem, sounds.size) {
+        if (sounds.isNotEmpty()) {
+            listState.animateScrollToItem(selectedItem.coerceIn(0, sounds.lastIndex))
+        }
     }
 }

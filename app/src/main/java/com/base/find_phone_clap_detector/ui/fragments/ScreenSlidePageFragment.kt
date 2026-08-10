@@ -30,22 +30,22 @@ class ScreenSlidePageFragment : Fragment() {
         arguments?.takeIf { it.containsKey(ARG_OBJECT) }?.apply {
             when (getInt(ARG_OBJECT)) {
                 1 -> {
-                    binding.imageView.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.img_onboarding1))
+                    binding.imageView.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.onboarding_clap_new))
                     binding.titleTv.text = getString(R.string.find_your_phone_with_a_clap)
                     binding.descriptionTv.text =
                         getString(R.string.simply_clap_your_hands_and_your_phone_will_ring_instantly_no_searching_needed)
                 }
                 2 -> {
-                    binding.imageView.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.img_onboarding2))
+                    binding.imageView.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.onboarding_pocket_guard_new))
+                    binding.titleTv.text = getString(R.string.onboarding_pocket_guard_title)
+                    binding.descriptionTv.text =
+                        getString(R.string.onboarding_pocket_guard_description)
+                }
+                3 -> {
+                    binding.imageView.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.onboarding_whistle_new))
                     binding.titleTv.text = getString(R.string.find_phone_via_whistle)
                     binding.descriptionTv.text =
                         getString(R.string.just_whistle_and_your_phone_will_ring_instantly)
-                }
-                3 -> {
-                    binding.imageView.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.img_onboarding3))
-                    binding.titleTv.text = getString(R.string.one_clap_find_your_phone2)
-                    binding.descriptionTv.text =
-                        getString(R.string.just_clap_once_and_your_phone_will_ring_instantly)
                 }
             }
         }

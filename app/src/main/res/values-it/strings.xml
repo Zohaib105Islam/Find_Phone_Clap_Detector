@@ -209,10 +209,12 @@
     <string name="please_wait2">Attendere prego...</string>
     <string name="find_your_phone">Individua il telefono</string>
     <string name="by">da</string>
-    <string name="find_your_phone_with_a_clap">Trova il tuo telefono\ncon un applauso</string>
-    <string name="simply_clap_your_hands_and_your_phone_will_ring_instantly_no_searching_needed">Basta battere le mani e il tuo telefono squillerà\nall’istante — nessuna ricerca necessaria.</string>
-    <string name="find_phone_via_whistle">Trova telefono tramite\nfischio</string>
-    <string name="just_whistle_and_your_phone_will_ring_instantly">Basta fischiare e il tuo telefono squillerà\nall’istante.</string>
+    <string name="find_your_phone_with_a_clap">Batti le mani e trovalo</string>
+    <string name="simply_clap_your_hands_and_your_phone_will_ring_instantly_no_searching_needed">Batti una volta le mani per attivare l’avviso scelto e trovare il telefono in pochi secondi.</string>
+    <string name="onboarding_pocket_guard_title">Protezione tasca e tocco</string>
+    <string name="onboarding_pocket_guard_description">Ricevi subito un avviso se qualcuno sposta il telefono o lo prende dalla tasca.</string>
+    <string name="find_phone_via_whistle">Fischia e trovalo</string>
+    <string name="just_whistle_and_your_phone_will_ring_instantly">Fischia una volta per attivare il suono scelto e trovare facilmente il telefono.</string>
     <string name="one_clap_find_your_phone2">Un applauso, trova il tuo\ntelefono</string>
     <string name="just_clap_once_and_your_phone_will_ring_instantly">Basta un applauso e il tuo telefono\nsuonerà all’istante.</string>
     <string name="find_my">Trova il mio</string>

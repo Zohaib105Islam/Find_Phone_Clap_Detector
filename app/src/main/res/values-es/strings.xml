@@ -210,10 +210,12 @@
     <string name="please_wait2">Por favor espera...</string>
     <string name="find_your_phone">Localiza tu teléfono</string>
     <string name="by">por</string>
-    <string name="find_your_phone_with_a_clap">Encuentra tu teléfono\ncon un aplauso</string>
-    <string name="simply_clap_your_hands_and_your_phone_will_ring_instantly_no_searching_needed">Simplemente aplaude y tu teléfono sonará\nal instante — no es necesario buscar.</string>
-    <string name="find_phone_via_whistle">Encuentra el teléfono mediante\nsilbido</string>
-    <string name="just_whistle_and_your_phone_will_ring_instantly">Solo silba y tu teléfono sonará\nal instante.</string>
+    <string name="find_your_phone_with_a_clap">Da una palmada y encuéntralo</string>
+    <string name="simply_clap_your_hands_and_your_phone_will_ring_instantly_no_searching_needed">Da una palmada para activar la alerta elegida y encontrar tu teléfono en segundos.</string>
+    <string name="onboarding_pocket_guard_title">Protección de bolsillo y toque</string>
+    <string name="onboarding_pocket_guard_description">Recibe una alerta instantánea si alguien mueve tu teléfono o lo saca de tu bolsillo.</string>
+    <string name="find_phone_via_whistle">Silba y encuéntralo</string>
+    <string name="just_whistle_and_your_phone_will_ring_instantly">Silba una vez para activar el sonido elegido y encontrar tu teléfono fácilmente.</string>
     <string name="one_clap_find_your_phone2">Un aplauso, encuentra tu\nteléfono</string>
     <string name="just_clap_once_and_your_phone_will_ring_instantly">Solo aplaude una vez y tu teléfono\nsonará al instante.</string>
     <string name="find_my">Encuentra mi</string>

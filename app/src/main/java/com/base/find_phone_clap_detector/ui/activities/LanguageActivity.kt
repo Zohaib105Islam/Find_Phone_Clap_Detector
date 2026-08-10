@@ -1,33 +1,20 @@
 package com.base.find_phone_clap_detector.ui.activities
 
-import android.animation.ValueAnimator
-import android.app.AlertDialog
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.WindowManager
 import android.view.animation.AnimationUtils
-import android.view.animation.LinearInterpolator
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.ads.AdSize
 import com.base.find_phone_clap_detector.R
 import com.base.find_phone_clap_detector.databinding.ActivityLanguageBinding
-import com.base.find_phone_clap_detector.managers.AdsManager
 import com.base.find_phone_clap_detector.managers.AnalyticsManager
 import com.base.find_phone_clap_detector.managers.PreferenceManager
 import com.base.find_phone_clap_detector.myApplication.MyApplication
@@ -35,9 +22,6 @@ import com.base.find_phone_clap_detector.ui.adapters.LanguagesAdapter
 import com.base.find_phone_clap_detector.ui.dataClasses.ModelLanguage
 import com.base.find_phone_clap_detector.utils.LocaleHelper
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
 class LanguageActivity : AppCompatActivity() {
@@ -69,10 +53,6 @@ class LanguageActivity : AppCompatActivity() {
         "French" to "Enregistrer",
         "Italian" to "Salva"
     )
-
-    private val handler = Handler(Looper.getMainLooper())
-    private var applyingLanguageDialog: AlertDialog? = null
-    private var progressAnimator: ValueAnimator? = null
 
     private val TAG = "LanguageActivity"
 
@@ -136,41 +116,38 @@ class LanguageActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            showApplyingLanguageDialog {
-                try {
-                    // Save language
+            try {
+                // Save language
+                MyApplication.mInstance.preferenceManager.put(
+                    PreferenceManager.Key.APP_LANGUAGE,
+                    selectedLanguage
+                )
+
+                Log.d("LanguageActivityCheck", " try Language is: ${selectedLanguage}")
+
+                if (isAppFirstTime) {
+                    AnalyticsManager.logEvent("FA_onboarding_language_save")
+                    startActivity(Intent(this@LanguageActivity, OnBoardingActivity::class.java))
+                    finish()
+                } else {
                     MyApplication.mInstance.preferenceManager.put(
-                        PreferenceManager.Key.APP_LANGUAGE,
-                        selectedLanguage
+                        PreferenceManager.Key.SKIP_PREMIUM,
+                        true
                     )
-
-                    Log.d("LanguageActivityCheck", " try Language is: ${selectedLanguage}")
-
-                    if (isAppFirstTime) {
-                        AnalyticsManager.logEvent("FA_onboarding_language_save")
-                        startActivity(Intent(this@LanguageActivity, OnBoardingActivity::class.java))
-                        finish()
-                    } else {
-                        MyApplication.mInstance.preferenceManager.put(
-                            PreferenceManager.Key.SKIP_PREMIUM,
-                            true
-                        )
-                        val intent = packageManager.getLaunchIntentForPackage(packageName)?.apply {
-                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                        }
-                        startActivity(intent)
-                        finishAffinity()
-
+                    val intent = packageManager.getLaunchIntentForPackage(packageName)?.apply {
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                     }
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    Toast.makeText(
-                        this,
-                        "Failed to apply language. Please try again.",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    startActivity(intent)
+                    finishAffinity()
                 }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(
+                    this,
+                    "Failed to apply language. Please try again.",
+                    Toast.LENGTH_LONG
+                ).show()
             }
 
         }
@@ -209,94 +186,28 @@ class LanguageActivity : AppCompatActivity() {
 
         Log.d("LanguageActivityCheck", " Before LanguagesAdapter is: ${selectedLanguage}")
 
-        lifecycleScope.launch {
-            delay(1.seconds)
-            binding.pb.visibility = View.GONE
-            binding.doneBtn.visibility = View.VISIBLE
-
-            adapter = LanguagesAdapter(this@LanguageActivity, defaultItemList) { selected ->
-                enableDoneButton()
-                selectedLanguage = selected.language
-                Log.d("LanguageActivityCheck", "LanguagesAdapter is: ${selected.language}")
-                // Change button text according to selected language
-                binding.doneBtn.text = doneTranslations[selected.language] ?: "Save"
-            }
-            binding.recyclerView.adapter = adapter
-
-            val animation = AnimationUtils.loadLayoutAnimation(
-                this@LanguageActivity,
-                R.anim.layout_animation_fall_down
-            )
-
-            binding.recyclerView.layoutAnimation = animation
-            binding.recyclerView.scheduleLayoutAnimation()
+        adapter = LanguagesAdapter(this@LanguageActivity, defaultItemList) { selected ->
+            enableDoneButton()
+            selectedLanguage = selected.language
+            Log.d("LanguageActivityCheck", "LanguagesAdapter is: ${selected.language}")
+            // Change button text according to selected language
+            binding.doneBtn.text = doneTranslations[selected.language] ?: "Save"
         }
+        binding.recyclerView.adapter = adapter
+
+        val animation = AnimationUtils.loadLayoutAnimation(
+            this@LanguageActivity,
+            R.anim.layout_animation_fall_down
+        )
+
+        binding.recyclerView.layoutAnimation = animation
+        binding.recyclerView.scheduleLayoutAnimation()
 
     }
 
     private fun enableDoneButton() {
         binding.doneBtn.alpha = 1f
         binding.doneBtn.isEnabled = true
-    }
-
-    private fun showApplyingLanguageDialog(onComplete: () -> Unit) {
-        dismissApplyingLanguageDialog()
-
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.layout_applying_loading, null)
-
-        val progressBar = dialogView.findViewById<ProgressBar>(R.id.pb_ad_loading)
-
-        applyingLanguageDialog = AlertDialog.Builder(this)
-            .setView(dialogView)
-            .create()
-
-        applyingLanguageDialog?.setCancelable(false)
-        applyingLanguageDialog?.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
-        applyingLanguageDialog?.window?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-        applyingLanguageDialog?.window?.setDimAmount(0f)
-
-        if (!isFinishing && !isDestroyed) {
-            applyingLanguageDialog?.show()
-            startProgressBarAnimation(progressBar){
-                onComplete()
-            }
-
-        }
-    }
-
-    private fun startProgressBarAnimation(progressBar: ProgressBar,onComplete: () -> Unit) {
-        progressAnimator?.cancel()
-
-        progressAnimator = ValueAnimator.ofInt(0, 100).apply {
-            duration = 4000
-            interpolator = LinearInterpolator()
-
-            addUpdateListener { animator ->
-                val progress = animator.animatedValue as Int
-                progressBar.progress = progress
-
-                if (progress == 100) {
-                    dismissApplyingLanguageDialog()
-                    onComplete()
-                }
-            }
-            start()
-        }
-    }
-
-
-    private fun dismissApplyingLanguageDialog() {
-        progressAnimator?.cancel()
-        if (applyingLanguageDialog?.isShowing == true) {
-            applyingLanguageDialog?.dismiss()
-        }
-        applyingLanguageDialog = null
-    }
-
-    override fun onDestroy() {
-        handler.removeCallbacksAndMessages(null)
-        dismissApplyingLanguageDialog()
-        super.onDestroy()
     }
 
 }

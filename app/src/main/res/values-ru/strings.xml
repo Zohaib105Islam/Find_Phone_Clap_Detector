@@ -209,10 +209,12 @@
     <string name="please_wait2">Пожалуйста, подождите...</string>
     <string name="find_your_phone">Найдите свой телефон</string>
     <string name="by">от</string>
-    <string name="find_your_phone_with_a_clap">Найдите ваш телефон\nаплодисментом</string>
-    <string name="simply_clap_your_hands_and_your_phone_will_ring_instantly_no_searching_needed">Просто похлопайте в ладоши, и ваш телефон\nзазвонит мгновенно — искать не нужно.</string>
-    <string name="find_phone_via_whistle">Найти телефон через\nсвист</string>
-    <string name="just_whistle_and_your_phone_will_ring_instantly">Просто свистните, и ваш телефон\nзазвонит мгновенно.</string>
+    <string name="find_your_phone_with_a_clap">Хлопните, чтобы найти</string>
+    <string name="simply_clap_your_hands_and_your_phone_will_ring_instantly_no_searching_needed">Хлопните один раз, чтобы включить выбранный сигнал и найти телефон за считаные секунды.</string>
+    <string name="onboarding_pocket_guard_title">Защита кармана и касаний</string>
+    <string name="onboarding_pocket_guard_description">Мгновенно получите сигнал, если кто-то переместит телефон или достанет его из кармана.</string>
+    <string name="find_phone_via_whistle">Свистните, чтобы найти</string>
+    <string name="just_whistle_and_your_phone_will_ring_instantly">Свистните один раз, чтобы включить выбранный звук и легко найти телефон.</string>
     <string name="one_clap_find_your_phone2">Один хлопок, найдите ваш\nтелефон</string>
     <string name="just_clap_once_and_your_phone_will_ring_instantly">Просто хлопните один раз, и ваш телефон\nзазвонит мгновенно.</string>
     <string name="find_my">Найти мой</string>

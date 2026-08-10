@@ -209,10 +209,12 @@
     <string name="please_wait2">Lütfen bekleyin...</string>
     <string name="find_your_phone">Telefonunu bul</string>
     <string name="by">tarafından</string>
-    <string name="find_your_phone_with_a_clap">Telefonunu Bul\nBir Alkışla</string>
-    <string name="simply_clap_your_hands_and_your_phone_will_ring_instantly_no_searching_needed">Sadece ellerini çırp ve telefonun hemen\nçalacak — aramaya gerek yok.</string>
-    <string name="find_phone_via_whistle">Telefonu Bul\nIslıkla</string>
-    <string name="just_whistle_and_your_phone_will_ring_instantly">Sadece ıslık çal ve telefonun hemen\nçalacak.</string>
+    <string name="find_your_phone_with_a_clap">Alkışla ve Bul</string>
+    <string name="simply_clap_your_hands_and_your_phone_will_ring_instantly_no_searching_needed">Seçtiğin uyarıyı başlatmak ve telefonunu saniyeler içinde bulmak için bir kez alkışla.</string>
+    <string name="onboarding_pocket_guard_title">Cep ve Dokunma Koruması</string>
+    <string name="onboarding_pocket_guard_description">Birisi telefonunu hareket ettirirse veya cebinden çıkarırsa anında uyarı al.</string>
+    <string name="find_phone_via_whistle">Islık Çal ve Bul</string>
+    <string name="just_whistle_and_your_phone_will_ring_instantly">Seçtiğin sesi başlatmak ve telefonunu kolayca bulmak için bir kez ıslık çal.</string>
     <string name="one_clap_find_your_phone2">Bir Alkış, Telefonunu\nBul</string>
     <string name="just_clap_once_and_your_phone_will_ring_instantly">Sadece bir kez alkışla ve telefonun\nhemen çalacak.</string>
     <string name="find_my">Benim Bul</string>

@@ -138,7 +138,7 @@ class MyApplication: Application(), Application.ActivityLifecycleCallbacks, Life
                         ) {
                             Log.d("RemoteConfig","Open ad is enabled")
                             AnalyticsManager.logEvent("FA_open_ad_resume_requested")
-                            loadOpenAdManually(it)
+                         //   loadOpenAdManually(it)
                         }else {
                             Log.d("RemoteConfig","Open ad is disabled")
                             AnalyticsManager.logEvent("FA_open_ad_resume_disabled_remote")

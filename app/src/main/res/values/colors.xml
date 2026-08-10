@@ -68,5 +68,14 @@
     <color name="purple">#3B82F6</color>
     <color name="gray">#808080</color>
 
+    <!-- Sound preview redesign -->
+    <color name="sound_preview_surface">#FFFFFFFF</color>
+    <color name="sound_preview_surface_alt">#EFF6FF</color>
+    <color name="sound_preview_text">#102A56</color>
+    <color name="sound_preview_muted">#64748B</color>
+    <color name="sound_preview_outline">#D9E7FF</color>
+    <color name="sound_preview_chip_inactive">#EDF4FF</color>
+    <color name="sound_preview_track_off">#C9D8EE</color>
+
 
 </resources>

@@ -1,16 +1,11 @@
 package com.base.find_phone_clap_detector.ui.fragments
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
+import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,16 +14,12 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.RatingBar
 import android.widget.Toast
-import androidx.core.content.edit
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.base.find_phone_clap_detector.R
-import com.base.find_phone_clap_detector.databinding.DialogPremiumUpgradeBinding
-import com.base.find_phone_clap_detector.databinding.DialogueServiceStartTimerBinding
 import com.base.find_phone_clap_detector.databinding.FragmentHomeBinding
-import com.base.find_phone_clap_detector.managers.AdsManager
 import com.base.find_phone_clap_detector.managers.AnalyticsManager
 import com.base.find_phone_clap_detector.managers.PreferenceManager
 import com.base.find_phone_clap_detector.managers.PreferenceManager.Key
@@ -47,7 +38,6 @@ import com.base.find_phone_clap_detector.utils.AudioPermissionUtil
 import com.base.find_phone_clap_detector.utils.Constants
 import com.base.find_phone_clap_detector.utils.DetectorWorkerStarter
 import com.base.find_phone_clap_detector.utils.NotificationPermissionUtil
-import com.base.find_phone_clap_detector.utils.RemoteConfigAds
 import com.base.find_phone_clap_detector.utils.StoragePermissionUtil
 import com.base.find_phone_clap_detector.utils.disableMultipleClicking
 import kotlinx.coroutines.delay
@@ -57,7 +47,6 @@ class HomeFragment : Fragment(), SoundInterface {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private lateinit var prefs: SharedPreferences
 
     private var soundsAdapter: SoundsAdapter? = null
 
@@ -87,7 +76,6 @@ class HomeFragment : Fragment(), SoundInterface {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        LoadAd()
         initListeners()
         initAdapter()
         // restore the last selected mode instead of forcing the first one
@@ -111,25 +99,8 @@ class HomeFragment : Fragment(), SoundInterface {
 
     }
 
-    private fun LoadAd() {
-        Log.d("HomeAdTest", "LoadAd called")
-        MyApplication.mInstance.adsManager.loadNativeAd(
-            requireActivity(),
-            binding.adFrame,
-            AdsManager.NativeAdType.MEDIA_SMALL_NEW,
-            this.getString(R.string.ADMOB_NATIVE_WITHOUT_MEDIA_HOME_V2),
-            binding.shimmerLayout
-        )
-    }
-
     override fun onStart() {
         super.onStart()
-        prefs =
-            requireContext().getSharedPreferences("feature_attempts_prefs", Context.MODE_PRIVATE)
-        val attempts = prefs.getInt("dont_touch_attempts", 1)
-        updateFreeTrialIconsDontTouch(attempts)
-        val attemptss = prefs.getInt("pocket_mode_attempts", 1)
-        updateFreeTrialIconsPocket(attemptss)
         syncDetectorUi(resetSelectionWhenInactive = false)
     }
 
@@ -146,25 +117,15 @@ class HomeFragment : Fragment(), SoundInterface {
         binding.dontTouch.setOnClickListener {
             disableMultipleClicking(it, 1000)
             MyApplication.mInstance.byCreateAudioService = false
-
-            if (isAppPremium()) {
-                Constants.SERVICE_TYPE = Constants.DONT_TOUCH
-                selectTopService(TopServiceType.DONT_TOUCH)
-            } else {
-                handleDontTouchClick()
-            }
+            Constants.SERVICE_TYPE = Constants.DONT_TOUCH
+            selectTopService(TopServiceType.DONT_TOUCH)
         }
 
         binding.pocketMode.setOnClickListener {
             disableMultipleClicking(it, 1000)
             MyApplication.mInstance.byCreateAudioService = false
-
-            if (isAppPremium()) {
-                selectTopService(TopServiceType.POCKET_MODE)
-                Constants.SERVICE_TYPE = Constants.POCKET_MODE
-            } else {
-                handlePockeMode()
-            }
+            selectTopService(TopServiceType.POCKET_MODE)
+            Constants.SERVICE_TYPE = Constants.POCKET_MODE
         }
 
         binding.byWhistle.setOnClickListener {
@@ -197,119 +158,23 @@ class HomeFragment : Fragment(), SoundInterface {
         }
 
         setDetectorUiState(isDetectorActive, persist = false)
-//        binding.apply {
-//            if (isDetectorActive) {
-//                binding.enableView.visibility = View.VISIBLE
-//                binding.enableViewHand.visibility = View.VISIBLE
-//                binding.disableView.visibility = View.INVISIBLE
-//            } else {
-//                binding.enableView.visibility = View.INVISIBLE
-//                binding.enableViewHand.visibility = View.INVISIBLE
-//                binding.disableView.visibility = View.VISIBLE
-//            }
-//        }
 
-        binding.enableView.setOnClickListener {
+        binding.activationButton.setOnClickListener {
             disableMultipleClicking(it, 1000)
-            stopDetectionService()
-            setDetectorUiState(false, persist = false) // stopDetectionService already persists the pref
-            selectTopService(TopServiceType.FIND_PHONE)
-        }
-
-        binding.disableView.setOnClickListener {
-            disableMultipleClicking(it, 1000)
-            AnalyticsManager.logEvent("FA_service_start")
-
-            audioPermissionUtil.checkAndRequest {
-                notificationPermissionUtil.checkAndRequest {
-                    if (isAppPremium()) {
-                        handleApplySoundLogic()
-                    } else {
-                        //  Permission granted → Go Next
-                        showServiceStartCountDialog()
-                    }
-                }
-            }
-        }
-
-    }
-
-    fun showServiceStartCountDialog() {
-        val dialogBinding = DialogueServiceStartTimerBinding.inflate(
-            LayoutInflater.from(requireActivity())
-        )
-
-        val alertDialog = AlertDialog.Builder(requireActivity())
-            .setView(dialogBinding.root)
-            .setCancelable(false)
-            .create()
-
-        alertDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        alertDialog.show()
-
-        val countDownTimer = object : CountDownTimer(5000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                val secondsLeft = (millisUntilFinished / 1000).toInt() + 1
-                dialogBinding.tvTimer.text = secondsLeft.toString()
-            }
-
-            override fun onFinish() {
-                if (_binding == null || !isAdded) return
-                if (alertDialog.isShowing) {
-                    alertDialog.dismiss()
-
-                    if (!RemoteConfigAds.shouldShowAd(RemoteConfigAds.SERVICE_START)) {
-                        if (Constants.SERVICE_TYPE == Constants.POCKET_MODE) {
-                            prefs.edit { putInt("pocket_mode_attempts", 0) }
-                        }
-                        if (Constants.SERVICE_TYPE == Constants.DONT_TOUCH) {
-                            prefs.edit { putInt("dont_touch_attempts", 0) }
-                        }
-                        binding.tvTapToActivate.text = getString(R.string.tap_to_deactivate)
-                        handleApplySoundLogic()
-
-                        return
-                    }
-
-                    MyApplication.mInstance.adsManager.loadInterstitialAd(
-                        requireActivity(),
-                        adId = getString(R.string.ADMOB_INTERSTITIAL_V2_SERVICE)
-                    ) {
-                        if (_binding == null || !isAdded) return@loadInterstitialAd
-                        if (Constants.SERVICE_TYPE == Constants.POCKET_MODE) {
-                            prefs.edit { putInt("pocket_mode_attempts", 0) }
-                        }
-                        if (Constants.SERVICE_TYPE == Constants.DONT_TOUCH) {
-                            prefs.edit { putInt("dont_touch_attempts", 0) }
-                        }
-                        binding.tvTapToActivate.text = getString(R.string.tap_to_deactivate)
+            if (isDetectorActive) {
+                stopDetectionService()
+                setDetectorUiState(false, persist = false) // stopDetectionService already persists the pref
+                selectTopService(TopServiceType.FIND_PHONE)
+            } else {
+                AnalyticsManager.logEvent("FA_service_start")
+                audioPermissionUtil.checkAndRequest {
+                    notificationPermissionUtil.checkAndRequest {
                         handleApplySoundLogic()
                     }
                 }
             }
         }
 
-        dialogBinding.tvTimer.text = "5"
-        countDownTimer.start()
-
-        fun closeDialog() {
-            countDownTimer.cancel()
-            if (alertDialog.isShowing) {
-                alertDialog.dismiss()
-            }
-        }
-
-        dialogBinding.btnCancel.setOnClickListener {
-            closeDialog()
-        }
-
-        dialogBinding.cross.setOnClickListener {
-            closeDialog()
-        }
-
-        alertDialog.setOnDismissListener {
-            countDownTimer.cancel()
-        }
     }
 
     private fun initAdapter() {
@@ -425,13 +290,18 @@ class HomeFragment : Fragment(), SoundInterface {
         binding.soundsRv.apply {
             setHasFixedSize(true)
 //            setItemViewCacheSize(4)
-            layoutManager = GridLayoutManager(requireActivity(), 3)
+            layoutManager = LinearLayoutManager(
+                requireActivity(),
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
 
             soundsAdapter = SoundsAdapter(
                 requireActivity(),
                 soundsArrayList,
                 selectedPosition,
-                this@HomeFragment
+                this@HomeFragment,
+                useHomeCircularStyle = true
             )
 
             adapter = soundsAdapter
@@ -537,11 +407,27 @@ class HomeFragment : Fragment(), SoundInterface {
                 active
             )
         }
-        binding.enableView.visibility = if (active) View.VISIBLE else View.INVISIBLE
-        binding.enableViewHand.visibility = if (active) View.VISIBLE else View.INVISIBLE
-        binding.disableView.visibility = if (active) View.INVISIBLE else View.VISIBLE
+        binding.activationButton.setBackgroundResource(
+            if (active) {
+                R.drawable.home_activation_ring_active
+            } else {
+                R.drawable.home_activation_ring_inactive
+            }
+        )
+        binding.ivPowerIcon.setBackgroundResource(
+            if (active) {
+                R.drawable.home_power_inner_active
+            } else {
+                R.drawable.home_power_inner_inactive
+            }
+        )
+        binding.ivPowerIcon.imageTintList = ColorStateList.valueOf(
+            requireContext().getColor(if (active) R.color.primary else R.color.gray_text)
+        )
+        binding.activationHand.visibility = if (active) View.GONE else View.VISIBLE
         binding.tvTapToActivate.text =
             getString(if (active) R.string.tap_to_deactivate else R.string.tap_to_activate)
+        binding.activationButton.contentDescription = binding.tvTapToActivate.text
     }
 
     private fun restartService() {
@@ -564,8 +450,6 @@ class HomeFragment : Fragment(), SoundInterface {
     override fun onResume() {
         super.onResume()
         syncDetectorUi()
-        updateFreeTrialIconsDontTouch(prefs.getInt("dont_touch_attempts", 1))
-        updateFreeTrialIconsPocket(prefs.getInt("pocket_mode_attempts", 1))
 
         viewLifecycleOwner.lifecycleScope.launch {
             delay(100)
@@ -590,12 +474,12 @@ class HomeFragment : Fragment(), SoundInterface {
                 return@launch
             }
 
-            // Normal premium showing logic
-            if (AdsCounter.showPremiumScreen()) {
-                AdsCounter.proCounter = 0
-                Log.d("MainActivity", "Showing premium screen normally")
-                startActivity(Intent(requireActivity(), PremiumScreenActivity::class.java))
-            }
+//            // Normal premium showing logic
+//            if (AdsCounter.showPremiumScreen()) {
+//                AdsCounter.proCounter = 0
+//                Log.d("MainActivity", "Showing premium screen normally")
+//                startActivity(Intent(requireActivity(), PremiumScreenActivity::class.java))
+//            }
         }
 
         // Rating logic (unchanged)
@@ -669,63 +553,6 @@ class HomeFragment : Fragment(), SoundInterface {
         )
     }
 
-    private fun handleDontTouchClick() {
-        val attempts = prefs.getInt("dont_touch_attempts", 1)
-
-        if (attempts > 0) {
-            // Free trial available
-            Constants.SERVICE_TYPE = Constants.DONT_TOUCH
-            selectTopService(TopServiceType.DONT_TOUCH)
-
-            // Save that user used the trial
-         //   prefs.edit().putInt("dont_touch_attempts", 0).apply()
-
-            // Update icons after trial used
-         //   updateFreeTrialIconsDontTouch(0)
-        } else {
-            // No trial left → Show Premium Dialog
-            showPremiumDialog()
-        }
-    }
-
-    private fun handlePockeMode() {
-        val attempts = prefs.getInt("pocket_mode_attempts", 1)
-
-        if (attempts > 0) {
-
-            selectTopService(TopServiceType.POCKET_MODE)
-            Constants.SERVICE_TYPE = Constants.POCKET_MODE
-
-            // Save attempt used
-          //  prefs.edit().putInt("pocket_mode_attempts", 0).apply()
-          //  updateFreeTrialIconsPocket(0)
-        } else {
-            showPremiumDialog()
-        }
-    }
-
-    private fun updateFreeTrialIconsDontTouch(attempts: Int) {
-        Log.d("FreeTrailTest", "Dont Touch Mode attempts: $attempts")
-
-        if (isAppPremium()) {
-            binding.clDontTouchProCard.visibility = View.GONE
-        } else {
-            binding.clDontTouchProCard.visibility = View.VISIBLE
-            binding.tvDontTouchAttempts.text = "$attempts ${getString(R.string.free_trail)}"
-        }
-    }
-
-    private fun updateFreeTrialIconsPocket(attempt: Int) {
-        Log.d("FreeTrailTest", "Pocket Mode attempts: $attempt")
-        if (isAppPremium()) {
-            binding.clPocketModeProCard.visibility = View.GONE
-        } else {
-            binding.clPocketModeProCard.visibility = View.VISIBLE
-            binding.tvPocketModeAttempts.text = "$attempt ${getString(R.string.free_trail)}"
-        }
-    }
-
-
     private fun selectTopService(type: TopServiceType) {
 
         // Reset All First (Unselect Everything)
@@ -734,23 +561,23 @@ class HomeFragment : Fragment(), SoundInterface {
         when (type) {
 
             TopServiceType.FIND_PHONE -> {
-                binding.bgFindPhone.setBackgroundResource(R.drawable.ic_selected_card)
-                binding.tvFindPhone.setTextColor(requireContext().getColor(R.color.white))
+                binding.bgFindPhone.setBackgroundResource(R.drawable.home_service_ring_selected)
+                binding.tvFindPhone.setTextColor(requireContext().getColor(R.color.primary))
             }
 
             TopServiceType.DONT_TOUCH -> {
-                binding.bgDontTouch.setBackgroundResource(R.drawable.ic_selected_card)
-                binding.tvDontTouch.setTextColor(requireContext().getColor(R.color.white))
+                binding.bgDontTouch.setBackgroundResource(R.drawable.home_service_ring_selected)
+                binding.tvDontTouch.setTextColor(requireContext().getColor(R.color.primary))
             }
 
             TopServiceType.POCKET_MODE -> {
-                binding.bgPocketMode.setBackgroundResource(R.drawable.ic_selected_card)
-                binding.tvPocketMode.setTextColor(requireContext().getColor(R.color.white))
+                binding.bgPocketMode.setBackgroundResource(R.drawable.home_service_ring_selected)
+                binding.tvPocketMode.setTextColor(requireContext().getColor(R.color.primary))
             }
 
             TopServiceType.BY_WHISTLE -> {
-                binding.bgByWhistle.setBackgroundResource(R.drawable.ic_selected_card)
-                binding.tvByWhistle.setTextColor(requireContext().getColor(R.color.white))
+                binding.bgByWhistle.setBackgroundResource(R.drawable.home_service_ring_selected)
+                binding.tvByWhistle.setTextColor(requireContext().getColor(R.color.primary))
             }
         }
     }
@@ -767,10 +594,10 @@ class HomeFragment : Fragment(), SoundInterface {
     private fun resetAllTopServices() {
 
         // Reset Backgrounds
-        binding.bgFindPhone.setBackgroundResource(R.drawable.ic_unselected_card)
-        binding.bgDontTouch.setBackgroundResource(R.drawable.ic_unselected_card)
-        binding.bgPocketMode.setBackgroundResource(R.drawable.ic_unselected_card)
-        binding.bgByWhistle.setBackgroundResource(R.drawable.ic_unselected_card)
+        binding.bgFindPhone.setBackgroundResource(R.drawable.home_service_ring_unselected)
+        binding.bgDontTouch.setBackgroundResource(R.drawable.home_service_ring_unselected)
+        binding.bgPocketMode.setBackgroundResource(R.drawable.home_service_ring_unselected)
+        binding.bgByWhistle.setBackgroundResource(R.drawable.home_service_ring_unselected)
 
         // Reset Text Colors
         val grayColor = requireContext().getColor(R.color.gray_text)
@@ -781,44 +608,6 @@ class HomeFragment : Fragment(), SoundInterface {
         binding.tvByWhistle.setTextColor(grayColor)
 
     }
-
-    private fun showPremiumDialog() {
-        val dialogBinding = DialogPremiumUpgradeBinding.inflate(layoutInflater)
-        val dialog = AlertDialog.Builder(requireActivity())
-            .setView(dialogBinding.root)
-            .create()
-
-        // Make background transparent
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        // Optional: dim background behind dialog
-        dialog.window?.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-        dialog.window?.setDimAmount(0.8f) // 0.0 = no dim, 1.0 = fully dark
-
-        dialogBinding.btnUpgrade.setOnClickListener {
-            disableMultipleClicking(it, 1000)
-            dialog.dismiss()
-            val intent = Intent(requireActivity(), PremiumScreenActivity::class.java)
-            startActivity(intent)
-        }
-
-        dialogBinding.btnLater.setOnClickListener {
-            disableMultipleClicking(it, 1000)
-            dialog.dismiss()
-        }
-
-        dialog.show()
-
-        // Set width to 90% of screen
-        val window = dialog.window
-        val layoutParams = WindowManager.LayoutParams()
-        layoutParams.copyFrom(window?.attributes)
-        val displayMetrics = resources.displayMetrics
-        layoutParams.width = (displayMetrics.widthPixels * 0.9).toInt()
-        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT
-        window?.attributes = layoutParams
-    }
-
 
     private fun showRatingDialogue() {
         if (!isAdded || context == null) return  // Fragment not attached, abort

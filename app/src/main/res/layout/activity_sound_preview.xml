@@ -11,251 +11,352 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="72dp"
         android:layoutDirection="locale"
-        android:paddingHorizontal="@dimen/_12sdp"
-        android:paddingVertical="@dimen/_7sdp"
+        android:paddingHorizontal="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/backIcon"
-            android:layout_width="@dimen/_24sdp"
-            android:layout_height="@dimen/_24sdp"
-            android:padding="@dimen/_2sdp"
-            android:src="@drawable/btn_back"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:background="@drawable/sound_preview_back_background"
+            android:contentDescription="@null"
+            android:padding="11dp"
+            android:src="@drawable/back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/sound_preview_text" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_8sdp"
-            android:gravity="center"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/inter_semi_bold"
             android:maxLines="1"
-            android:text="@string/sounds"
-            android:textColor="@color/textColor"
-            android:textSize="@dimen/_15sdp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/applySoundBtn"
+            android:text="@string/sound_preview_title"
+            android:textColor="@color/sound_preview_text"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/tvToolbarSubtitle"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/backIcon"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/backIcon" />
 
         <TextView
-            android:id="@+id/applySoundBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/_24sdp"
-            android:background="@drawable/bg_button_rounded"
+            android:id="@+id/tvToolbarSubtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
             android:fontFamily="@font/inter_regular"
-            android:gravity="center"
             android:maxLines="1"
-            android:paddingHorizontal="@dimen/_16sdp"
-            android:text="@string/apply"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_10sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="@string/sound_preview_subtitle"
+            android:textColor="@color/sound_preview_muted"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@+id/backIcon"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/backIcon"
+            app:layout_constraintTop_toBottomOf="@+id/title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/previewScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:clipToPadding="false"
         android:descendantFocusability="blocksDescendants"
+        android:fillViewport="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:fillViewport="true"
-        app:layout_constraintBottom_toTopOf="@id/ad_frame"
+        android:overScrollMode="never"
+        app:layout_constraintBottom_toTopOf="@+id/bottomActionBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:paddingBottom="18dp">
 
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="184dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="6dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardCornerRadius="26dp"
+                app:cardElevation="7dp">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/circleImageView"
-                android:layout_width="@dimen/_160sdp"
-                android:layout_height="@dimen/_150sdp"
-                android:src="@drawable/cat_sounds"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/sound_preview_hero_background">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/circleImageView"
+                        android:layout_width="62dp"
+                        android:layout_height="62dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:padding="8dp"
+                        android:src="@drawable/cat_sounds"
+                        app:civ_border_color="#70FFFFFF"
+                        app:civ_border_width="2dp"
+                        app:civ_circle_background_color="#28FFFFFF"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvSoundPreview"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:letterSpacing="0.12"
+                        android:text="@string/sound_preview_live"
+                        android:textColor="#CFE4FF"
+                        android:textSize="10sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/circleImageView"
+                        app:layout_constraintTop_toTopOf="@+id/circleImageView" />
+
+                    <TextView
+                        android:id="@+id/currentSoundName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginEnd="16dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:maxLines="1"
+                        android:text="@string/preview_sound"
+                        android:textColor="@color/white"
+                        android:textSize="21sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/circleImageView"
+                        app:layout_constraintTop_toBottomOf="@+id/tvSoundPreview" />
+
+                    <TextView
+                        android:id="@+id/tvTapToTest"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="@font/inter_regular"
+                        android:maxLines="1"
+                        android:text="@string/tap_to_test_current_selection"
+                        android:textColor="#D8E8FF"
+                        android:textSize="10sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/circleImageView"
+                        app:layout_constraintTop_toBottomOf="@+id/currentSoundName" />
+
+                    <ImageView
+                        android:id="@+id/ivPreviewWaveform"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="24dp"
+                        android:contentDescription="@null"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/sound_preview_waveform"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/play_pause_card"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/play_pause_card"
+                        android:layout_width="66dp"
+                        android:layout_height="66dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="18dp"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        app:cardBackgroundColor="@android:color/transparent"
+                        app:cardCornerRadius="33dp"
+                        app:cardElevation="5dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/sound_preview_play_button">
+
+                            <ImageView
+                                android:id="@+id/playBtn"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:contentDescription="@null"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:padding="23dp"
+                                android:src="@drawable/play"
+                                android:visibility="gone"
+                                app:tint="#123B91" />
+
+                            <ImageView
+                                android:id="@+id/pauseBtn"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:contentDescription="@null"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:padding="23dp"
+                                android:src="@drawable/pause"
+                                android:visibility="visible"
+                                app:tint="#123B91" />
+                        </FrameLayout>
+                    </androidx.cardview.widget.CardView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="22dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/inter_semi_bold"
+                android:text="@string/sound_preview_choose_title"
+                android:textColor="@color/sound_preview_text"
+                android:textSize="17sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/inter_regular"
+                android:text="@string/sound_preview_choose_hint"
+                android:textColor="@color/sound_preview_muted"
+                android:textSize="11sp" />
 
             <androidx.compose.ui.platform.ComposeView
                 android:id="@+id/composeCarousel"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_height="160dp"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/play_pause_card"
-                android:layout_width="@dimen/_65sdp"
-                android:layout_height="@dimen/_65sdp"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:elevation="4dp"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                app:cardBackgroundColor="@color/gray_card"
-                app:cardCornerRadius="@dimen/_35sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/composeCarousel">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="@dimen/_4sdp"
-                    android:background="@drawable/circle_dot"
-                    android:backgroundTint="@color/white"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/_4sdp">
-
-                    <ImageView
-                        android:id="@+id/playBtn"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/circle_dot"
-                        android:padding="@dimen/_18sdp"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:src="@drawable/play"
-                        android:visibility="gone"
-                        app:tint="@color/white" />
-
-                    <ImageView
-                        android:id="@+id/pauseBtn"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/circle_dot"
-                        android:padding="@dimen/_18sdp"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:src="@drawable/pause"
-                        android:visibility="visible"
-                        app:tint="@color/white" />
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:id="@+id/tvSoundPreview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:fontFamily="@font/inter_semi_bold"
-                android:maxLines="1"
-                android:text="@string/preview_sound"
-                android:textColor="@color/textColor"
-                android:textSize="@dimen/_13sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/play_pause_card" />
-
-            <TextView
-                android:id="@+id/tvTapToTest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/inter_regular"
-                android:maxLines="1"
-                android:text="@string/tap_to_test_current_selection"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/_10sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvSoundPreview" />
-
+                android:nestedScrollingEnabled="false" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvVolume"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                app:cardCornerRadius="@dimen/_12sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvTapToTest">
-
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="1dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_volume_gradient">
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/sound_preview_section_background"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/ivVolumeSectionIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/sound_preview_section_icon_background"
+                        android:contentDescription="@null"
+                        android:padding="10dp"
+                        android:src="@drawable/baseline_volume_up_24"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/primary" />
 
                     <TextView
                         android:id="@+id/tvVolume"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_8sdp"
+                        android:layout_marginStart="12dp"
                         android:fontFamily="@font/inter_semi_bold"
                         android:text="@string/volume"
-                        android:textColor="@color/textColor"
-                        android:textSize="@dimen/_10sdp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:textColor="@color/sound_preview_text"
+                        android:textSize="15sp"
+                        app:layout_constraintEnd_toStartOf="@+id/tvVolumePercent"
+                        app:layout_constraintStart_toEndOf="@+id/ivVolumeSectionIcon"
+                        app:layout_constraintTop_toTopOf="@+id/ivVolumeSectionIcon" />
+
+                    <TextView
+                        android:id="@+id/tvVolumeHint"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="2dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/inter_regular"
+                        android:maxLines="2"
+                        android:text="@string/sound_preview_volume_hint"
+                        android:textColor="@color/sound_preview_muted"
+                        android:textSize="10sp"
+                        app:layout_constraintEnd_toStartOf="@+id/tvVolumePercent"
+                        app:layout_constraintStart_toEndOf="@+id/ivVolumeSectionIcon"
+                        app:layout_constraintTop_toBottomOf="@+id/tvVolume" />
 
                     <TextView
                         android:id="@+id/tvVolumePercent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_8sdp"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:fontFamily="@font/inter_medium"
+                        android:layout_width="48dp"
+                        android:layout_height="32dp"
+                        android:background="@drawable/sound_preview_percent_background"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:gravity="center"
                         android:text="0%"
-                        android:textColor="@color/textColor"
-                        android:textSize="@dimen/_10sdp"
+                        android:textColor="@color/primary"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/ivVolumeSectionIcon"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="@+id/ivVolumeSectionIcon" />
 
                     <ImageView
                         android:id="@+id/ivVolumeMute"
-                        android:layout_width="@dimen/_11sdp"
-                        android:layout_height="@dimen/_11sdp"
-                        android:layout_marginVertical="@dimen/_8sdp"
-                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_width="17dp"
+                        android:layout_height="17dp"
+                        android:contentDescription="@null"
                         android:src="@drawable/ic_volume_low"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@+id/seekArc"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tvVolume" />
+                        app:layout_constraintTop_toTopOf="@+id/seekArc" />
 
                     <com.base.find_phone_clap_detector.utils.SeekArc
                         android:id="@+id/seekArc"
                         android:layout_width="0dp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_gravity="center"
-                        android:layout_marginHorizontal="@dimen/_5sdp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="18dp"
+                        android:layout_marginEnd="10dp"
                         android:clickable="true"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
-                        app:arcColor="@color/light_Text"
-                        app:arcWidth="@dimen/_7sdp"
+                        app:arcColor="@color/sound_preview_track_off"
+                        app:arcWidth="7dp"
                         app:clockwise="false"
                         app:enabled="true"
-                        app:layout_constraintBottom_toBottomOf="@+id/ivVolumeMute"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/ivVolumeUnMute"
                         app:layout_constraintStart_toEndOf="@+id/ivVolumeMute"
-                        app:layout_constraintTop_toTopOf="@+id/ivVolumeMute"
+                        app:layout_constraintTop_toBottomOf="@+id/ivVolumeSectionIcon"
                         app:max="100"
                         app:progress="60"
                         app:progressColor="@color/primary"
@@ -268,342 +369,406 @@
 
                     <ImageView
                         android:id="@+id/ivVolumeUnMute"
-                        android:layout_width="@dimen/_14sdp"
-                        android:layout_height="@dimen/_14sdp"
-                        android:layout_marginVertical="@dimen/_8sdp"
-                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_width="19dp"
+                        android:layout_height="19dp"
+                        android:contentDescription="@null"
                         android:src="@drawable/baseline_volume_up_24"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@+id/seekArc"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvVolumePercent"
-                        app:tint="@color/purple_dark" />
+                        app:layout_constraintTop_toTopOf="@+id/seekArc"
+                        app:tint="@color/primary" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
             </androidx.cardview.widget.CardView>
-
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvDuration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="12dp"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                app:cardCornerRadius="@dimen/_12sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cvVolume">
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="1dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_volume_gradient">
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/sound_preview_section_background"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:padding="16dp">
 
-
-                    <TextView
-                        android:id="@+id/timeDurationTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_8sdp"
-                        android:fontFamily="@font/inter_semi_bold"
-                        android:text="@string/duration"
-                        android:textColor="@color/textColor"
-                        android:textSize="@dimen/_10sdp"
+                    <ImageView
+                        android:id="@+id/ivDurationSectionIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/sound_preview_section_icon_background"
+                        android:contentDescription="@null"
+                        android:padding="9dp"
+                        android:src="@drawable/ic_timer_blue"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <TextView
+                        android:id="@+id/timeDurationTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:text="@string/duration"
+                        android:textColor="@color/sound_preview_text"
+                        android:textSize="15sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/ivDurationSectionIcon"
+                        app:layout_constraintTop_toTopOf="@+id/ivDurationSectionIcon" />
+
+                    <TextView
+                        android:id="@+id/tvDurationHint"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="2dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/inter_regular"
+                        android:maxLines="2"
+                        android:text="@string/sound_preview_duration_hint"
+                        android:textColor="@color/sound_preview_muted"
+                        android:textSize="10sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/ivDurationSectionIcon"
+                        app:layout_constraintTop_toBottomOf="@+id/timeDurationTitle" />
+
                     <LinearLayout
                         android:id="@+id/linearLayout2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/timeDurationTitle"
-                        android:layout_marginHorizontal="@dimen/_10sdp"
-                        android:layout_marginVertical="@dimen/_8sdp"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="16dp"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
                         android:orientation="horizontal"
-                        android:weightSum="5"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/timeDurationTitle">
+                        app:layout_constraintTop_toBottomOf="@+id/ivDurationSectionIcon">
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/card_five_second"
-                            android:layout_width="@dimen/_50sdp"
-                            android:layout_height="@dimen/_25sdp"
-                            android:layout_gravity="center"
-                            android:layout_margin="@dimen/_5sdp"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="4dp"
                             android:layout_weight="1"
                             android:focusable="false"
                             android:focusableInTouchMode="false"
-                            app:cardBackgroundColor="@color/gray_light"
-                            app:cardCornerRadius="@dimen/_4sdp">
+                            app:cardBackgroundColor="@color/sound_preview_chip_inactive"
+                            app:cardCornerRadius="14dp"
+                            app:cardElevation="0dp">
 
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_gravity="center"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/inter_medium"
+                                android:gravity="center"
                                 android:text="5s"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textColor="@color/sound_preview_text"
+                                android:textSize="12sp" />
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/card_ten_second"
-                            android:layout_width="@dimen/_50sdp"
-                            android:layout_height="@dimen/_25sdp"
-                            android:layout_gravity="center"
-                            android:layout_margin="@dimen/_5sdp"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginHorizontal="4dp"
                             android:layout_weight="1"
                             android:focusable="false"
                             android:focusableInTouchMode="false"
-                            app:cardBackgroundColor="@color/gray_light"
-                            app:cardCornerRadius="@dimen/_4sdp">
+                            app:cardBackgroundColor="@color/sound_preview_chip_inactive"
+                            app:cardCornerRadius="14dp"
+                            app:cardElevation="0dp">
 
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_gravity="center"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/inter_medium"
+                                android:gravity="center"
                                 android:text="10s"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textColor="@color/sound_preview_text"
+                                android:textSize="12sp" />
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/card_thirty_second"
-                            android:layout_width="@dimen/_50sdp"
-                            android:layout_height="@dimen/_25sdp"
-                            android:layout_gravity="center"
-                            android:layout_margin="@dimen/_5sdp"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginHorizontal="4dp"
                             android:layout_weight="1"
                             android:focusable="false"
                             android:focusableInTouchMode="false"
-                            app:cardBackgroundColor="@color/gray_light"
-                            app:cardCornerRadius="@dimen/_4sdp">
+                            app:cardBackgroundColor="@color/sound_preview_chip_inactive"
+                            app:cardCornerRadius="14dp"
+                            app:cardElevation="0dp">
 
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_gravity="center"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/inter_medium"
+                                android:gravity="center"
                                 android:text="30s"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textColor="@color/sound_preview_text"
+                                android:textSize="12sp" />
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/card_fortyfive_second"
-                            android:layout_width="@dimen/_50sdp"
-                            android:layout_height="@dimen/_25sdp"
-                            android:layout_gravity="center"
-                            android:layout_margin="@dimen/_5sdp"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginHorizontal="4dp"
                             android:layout_weight="1"
                             android:focusable="false"
                             android:focusableInTouchMode="false"
-                            app:cardBackgroundColor="@color/gray_light"
-                            app:cardCornerRadius="@dimen/_4sdp">
+                            app:cardBackgroundColor="@color/sound_preview_chip_inactive"
+                            app:cardCornerRadius="14dp"
+                            app:cardElevation="0dp">
 
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_gravity="center"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/inter_medium"
+                                android:gravity="center"
                                 android:text="45s"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textColor="@color/sound_preview_text"
+                                android:textSize="12sp" />
                         </androidx.cardview.widget.CardView>
-
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/cvLoopToggle"
-                            android:layout_width="@dimen/_50sdp"
-                            android:layout_height="@dimen/_25sdp"
-                            android:layout_gravity="center"
-                            android:layout_margin="@dimen/_5sdp"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="4dp"
                             android:layout_weight="1"
                             android:focusable="false"
                             android:focusableInTouchMode="false"
-                            app:cardBackgroundColor="@color/gray_light"
-                            app:cardCornerRadius="@dimen/_4sdp">
+                            app:cardBackgroundColor="@color/sound_preview_chip_inactive"
+                            app:cardCornerRadius="14dp"
+                            app:cardElevation="0dp">
 
                             <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_gravity="center"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:contentDescription="@null"
+                                android:padding="11dp"
                                 android:src="@drawable/ic_loop"
-                                app:tint="@color/black" />
-
+                                app:tint="@color/sound_preview_text" />
                         </androidx.cardview.widget.CardView>
 
                     </LinearLayout>
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
             </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="22dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/inter_semi_bold"
+                android:text="@string/sound_preview_controls_title"
+                android:textColor="@color/sound_preview_text"
+                android:textSize="17sp" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvDisableUsingPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_8sdp"
-                app:cardCornerRadius="@dimen/_12sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cvDuration">
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="10dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="1dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_volume_gradient">
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/sound_preview_section_background"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/ivDisableIcon"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:background="@drawable/sound_preview_section_icon_background"
+                        android:contentDescription="@null"
+                        android:padding="9dp"
+                        android:src="@drawable/ic_phone_pause_blue"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/tvDisable"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginHorizontal="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_8sdp"
-                        android:fontFamily="@font/inter_medium"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="8dp"
+                        android:fontFamily="@font/inter_semi_bold"
                         android:text="@string/disable_when_using_phone"
-                        android:textColor="@color/textColor"
-                        android:textSize="@dimen/_11sdp"
+                        android:textColor="@color/sound_preview_text"
+                        android:textSize="14sp"
                         app:layout_constraintEnd_toStartOf="@+id/btnDisableToggle"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintStart_toEndOf="@+id/ivDisableIcon"
+                        app:layout_constraintTop_toTopOf="@+id/ivDisableIcon" />
+
+                    <TextView
+                        android:id="@+id/tvDisableHint"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginEnd="8dp"
+                        android:fontFamily="@font/inter_regular"
+                        android:maxLines="2"
+                        android:text="@string/sound_preview_phone_hint"
+                        android:textColor="@color/sound_preview_muted"
+                        android:textSize="10sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/btnDisableToggle"
+                        app:layout_constraintStart_toEndOf="@+id/ivDisableIcon"
+                        app:layout_constraintTop_toBottomOf="@+id/tvDisable" />
 
                     <com.google.android.material.materialswitch.MaterialSwitch
                         android:id="@+id/btnDisableToggle"
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_margin="@dimen/_8sdp"
+                        android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/tvDisable"
-                        app:thumbTint="@color/light_gray"
-                        app:trackTint="@color/white" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginHorizontal="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_4sdp"
-                        android:layout_marginBottom="@dimen/_10sdp"
-                        android:fontFamily="@font/inter_regular"
-                        android:text="@string/this_feature_will_not_function_when_the_phone_is_being_used"
-                        android:textColor="@color/light_Text"
-                        android:textSize="@dimen/_10sdp"
+                        android:layout_marginEnd="4dp"
+                        android:minHeight="0dp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/btnDisableToggle"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tvDisable" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:thumbTint="@color/white"
+                        app:trackTint="@color/sound_preview_track_off" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvScheduleDeactivate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:layout_marginBottom="@dimen/_12sdp"
-                android:visibility="invisible"
-                app:cardCornerRadius="@dimen/_12sdp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cvDisableUsingPhone">
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="1dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_volume_gradient">
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/sound_preview_section_background"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/ivDeactivateIcon"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:background="@drawable/sound_preview_section_icon_background"
+                        android:contentDescription="@null"
+                        android:padding="9dp"
+                        android:src="@drawable/ic_timer_blue"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/tvDeactivate"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginHorizontal="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_8sdp"
-                        android:fontFamily="@font/inter_medium"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="8dp"
+                        android:fontFamily="@font/inter_semi_bold"
                         android:text="@string/schedule_deactivate_feature"
-                        android:textColor="@color/textColor"
-                        android:textSize="@dimen/_11sdp"
+                        android:textColor="@color/sound_preview_text"
+                        android:textSize="14sp"
                         app:layout_constraintEnd_toStartOf="@+id/btnDeactivateToggle"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <com.google.android.material.materialswitch.MaterialSwitch
-                        android:id="@+id/btnDeactivateToggle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_margin="@dimen/_8sdp"
-                        android:background="@android:color/transparent"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/tvDeactivate"
-                        app:thumbTint="@color/light_gray"
-                        app:trackTint="@color/white" />
+                        app:layout_constraintStart_toEndOf="@+id/ivDeactivateIcon"
+                        app:layout_constraintTop_toTopOf="@+id/ivDeactivateIcon" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginHorizontal="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_4sdp"
-                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginEnd="8dp"
                         android:fontFamily="@font/inter_regular"
-                        android:text="@string/set_a_schedule_to_automatically_turn_off_the_clap_to_find_feature"
-                        android:textColor="@color/light_Text"
-                        android:textSize="@dimen/_10sdp"
+                        android:maxLines="2"
+                        android:text="@string/sound_preview_schedule_hint"
+                        android:textColor="@color/sound_preview_muted"
+                        android:textSize="10sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/btnDeactivateToggle"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/ivDeactivateIcon"
                         app:layout_constraintTop_toBottomOf="@+id/tvDeactivate" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/btnDeactivateToggle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:layout_marginEnd="4dp"
+                        android:minHeight="0dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:thumbTint="@color/white"
+                        app:trackTint="@color/sound_preview_track_off" />
 
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-
     <FrameLayout
-        android:id="@+id/ad_frame"
+        android:id="@+id/bottomActionBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_5sdp"
+        android:background="@color/backColor"
+        android:elevation="12dp"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmer_layout"
+        <TextView
+            android:id="@+id/applySoundBtn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@color/shimmer_effect_color">
-
-            <include
-                android:id="@+id/native_ad_view"
-                layout="@layout/admob_native_media_small_layout_new"
-                android:visibility="invisible" />
-        </com.facebook.shimmer.ShimmerFrameLayout>
+            android:layout_height="56dp"
+            android:background="@drawable/sound_preview_apply_button"
+            android:drawableEnd="@drawable/forward_arrow"
+            android:drawablePadding="12dp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:gravity="center"
+            android:maxLines="1"
+            android:paddingHorizontal="22dp"
+            android:text="@string/sound_preview_apply"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
 
     </FrameLayout>
 
