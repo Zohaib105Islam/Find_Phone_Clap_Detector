@@ -10,6 +10,7 @@
         android:layout_margin="@dimen/_10sdp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/main_bg"
         tools:context=".ui.fragments.SoundFragment">
 
         <androidx.recyclerview.widget.RecyclerView

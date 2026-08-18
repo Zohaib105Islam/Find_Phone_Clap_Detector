@@ -3,7 +3,6 @@ package com.base.find_phone_clap_detector.ui.activities
 import android.animation.ObjectAnimator
 import android.app.Dialog
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -12,7 +11,6 @@ import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.viewpager2.widget.ViewPager2
@@ -28,7 +26,6 @@ import com.base.find_phone_clap_detector.ui.adapters.HomeViewPagerAdapter
 import com.base.find_phone_clap_detector.utils.CallUITrigger
 import com.base.find_phone_clap_detector.utils.DetectorWorkerStarter
 import com.base.find_phone_clap_detector.utils.LocaleHelper
-import com.base.find_phone_clap_detector.utils.Utils
 import com.base.find_phone_clap_detector.utils.disableMultipleClicking
 import com.base.find_phone_clap_detector.utils.gone
 import com.base.find_phone_clap_detector.utils.visible
@@ -38,12 +35,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: HomeViewPagerAdapter
     private val TAG = "MainActivity"
-    private var isDarkTheme = MyApplication.mInstance.preferenceManager.getBoolean(
-        PreferenceManager.Key.isDarkTheme,
-        false
-    )
-
-
     private val isMobileAdsInitializeCalled = AtomicBoolean(false)
     lateinit var googleMobileAdsConsentManager: GoogleMobileAdsConsentManager
 
@@ -63,13 +54,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        if (!MyApplication.mInstance.preferenceManager.getBoolean(
-                PreferenceManager.Key.isDarkTheme,
-                false
-            )
-        ) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        }
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
         initViews()
         showConsent()
@@ -77,12 +62,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        if (isDarkTheme) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
-
         val shakeAnimator = ObjectAnimator.ofFloat(
             binding.claimNowBtn,
             "translationX",
@@ -124,66 +103,6 @@ class MainActivity : AppCompatActivity() {
         binding.settingsIcon.setOnClickListener {
             disableMultipleClicking(it, 1000)
             startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
-        }
-
-        binding.themeIcon.setOnClickListener {
-            disableMultipleClicking(it, 1000)
-            if (MyApplication.mInstance.preferenceManager.getBoolean(PreferenceManager.Key.IS_APP_PREMIUM)) {
-                val currentNightMode =
-                    resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-                val isDarkMode = if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
-                    MyApplication.mInstance.preferenceManager.put(
-                        PreferenceManager.Key.isDarkTheme,
-                        false
-                    )
-                    false
-                } else {
-                    MyApplication.mInstance.preferenceManager.put(
-                        PreferenceManager.Key.isDarkTheme,
-                        true
-                    )
-                    true
-                }
-                val newNightMode = if (isDarkMode) {
-                    AppCompatDelegate.MODE_NIGHT_YES
-                } else {
-                    AppCompatDelegate.MODE_NIGHT_NO
-                }
-
-                AppCompatDelegate.setDefaultNightMode(newNightMode)
-                recreate()
-            } else {
-                Utils.watchAdOrBuyPremium(
-                    this@MainActivity,
-                    onBuyPremium = {
-                        startActivity(Intent(this@MainActivity, PremiumScreenActivity::class.java))
-                    }) {
-                    val currentNightMode =
-                        resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-                    val isDarkMode = if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
-                        MyApplication.mInstance.preferenceManager.put(
-                            PreferenceManager.Key.isDarkTheme,
-                            false
-                        )
-                        false
-                    } else {
-                        MyApplication.mInstance.preferenceManager.put(
-                            PreferenceManager.Key.isDarkTheme,
-                            true
-                        )
-                        true
-                    }
-                    val newNightMode = if (isDarkMode) {
-                        AppCompatDelegate.MODE_NIGHT_YES
-                    } else {
-                        AppCompatDelegate.MODE_NIGHT_NO
-                    }
-
-                    AppCompatDelegate.setDefaultNightMode(newNightMode)
-                    recreate()
-                }
-            }
-
         }
 
         if (MyApplication.mInstance.preferenceManager.getBoolean(PreferenceManager.Key.IS_APP_ADS_FREE, false)) {

@@ -43,7 +43,7 @@ import com.base.find_phone_clap_detector.R
 import com.base.find_phone_clap_detector.managers.PreferenceManager
 import com.base.find_phone_clap_detector.managers.PreferenceManager.Key
 import com.base.find_phone_clap_detector.myApplication.MyApplication
-import com.base.find_phone_clap_detector.ui.activities.StopSoundAvtivity
+import com.base.find_phone_clap_detector.ui.activities.StopSoundActivity
 import com.base.find_phone_clap_detector.utils.AppStateTracker
 import com.base.find_phone_clap_detector.utils.CallUITrigger
 import com.base.find_phone_clap_detector.utils.Constants
@@ -491,7 +491,7 @@ class ClapDetectService : Service(), SensorEventListener {
         )
         notificationManager.createNotificationChannel(notificationChannel)
 
-        val notificationIntent = Intent(this, StopSoundAvtivity::class.java)
+        val notificationIntent = Intent(this, StopSoundActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(
             this,
             0,
@@ -1004,7 +1004,7 @@ class ClapDetectService : Service(), SensorEventListener {
     }
 
     private fun launchStopSoundActivity(clearTop: Boolean) {
-        val intent = Intent(baseContext, StopSoundAvtivity::class.java).apply {
+        val intent = Intent(baseContext, StopSoundActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             if (clearTop) {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)

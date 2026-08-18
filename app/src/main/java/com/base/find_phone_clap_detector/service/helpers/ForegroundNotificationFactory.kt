@@ -9,7 +9,7 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import com.base.find_phone_clap_detector.R
 import com.base.find_phone_clap_detector.service.DetectorLog
-import com.base.find_phone_clap_detector.ui.activities.StopSoundAvtivity
+import com.base.find_phone_clap_detector.ui.activities.StopSoundActivity
 
 class ForegroundNotificationFactory(
     private val context: Context
@@ -25,7 +25,7 @@ class ForegroundNotificationFactory(
     fun create(): Notification {
         ensureChannel()
 
-        val notificationIntent = Intent(context, StopSoundAvtivity::class.java)
+        val notificationIntent = Intent(context, StopSoundActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(
             context,
             0,

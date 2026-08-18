@@ -5,187 +5,440 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backColor"
+    android:background="@drawable/main_bg"
+    android:layoutDirection="locale"
     tools:context=".ui.activities.RecordSoundActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shape_bg_record"
-        android:elevation="@dimen/_5sdp"
-        android:layoutDirection="locale"
+        android:id="@+id/recordToolbar"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <FrameLayout
             android:id="@+id/backBtn"
-            android:layout_width="@dimen/_17sdp"
-            android:layout_height="@dimen/_17sdp"
-            android:layout_margin="@dimen/_15sdp"
-            android:src="@drawable/back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/white" />
-
-        <TextView
-            android:id="@+id/textStatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_25sdp"
-            android:fontFamily="@font/instasans"
-            android:gravity="center"
-            android:text="@string/record_sound"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_15sdp"
-            app:layout_constraintTop_toBottomOf="@+id/backBtn"
-            tools:layout_editor_absoluteX="32dp" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_70sdp"
-            android:layout_margin="@dimen/_35sdp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_record_back_button"
+            android:clickable="true"
+            android:contentDescription="@string/settings_back_content_description"
+            android:focusable="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textStatus">
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/wavesImg"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/icon_waves" />
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/waveAnim"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:layout_gravity="center"
-                android:scaleType="fitXY"
-                android:visibility="invisible"
-                app:lottie_autoPlay="true"
-                app:lottie_loop="true"
-                app:lottie_rawRes="@raw/record_waves"
-                app:lottie_speed="1" />
+                android:contentDescription="@null"
+                android:src="@drawable/record_sound_ic_back" />
 
-        </RelativeLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/ad_frame"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
-
+        </FrameLayout>
 
         <TextView
-            android:id="@+id/textRecordingStatus"
-            android:layout_width="match_parent"
+            android:id="@+id/toolbarTitle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_25sdp"
-            android:fontFamily="@font/instasans"
-            android:gravity="center"
-            android:text="@string/tap_to_start_recording"
-            android:textColor="@color/textColor"
-            android:textSize="@dimen/_15sdp"
+            android:layout_marginStart="13dp"
+            android:fontFamily="@font/inter_bold"
+            android:text="@string/record_sound_toolbar_title"
+            android:textColor="@color/settings_text_primary"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/toolbarSubtitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/backBtn"
             app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="45dp" />
-
-        <ImageView
-            android:id="@+id/start_btn"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_50sdp"
-            android:layout_margin="@dimen/_15sdp"
-            android:src="@drawable/play_recording"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textRecordingStatus" />
-
-        <ImageView
-            android:id="@+id/pause_btn"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_50sdp"
-            android:layout_margin="@dimen/_15sdp"
-            android:src="@drawable/pause_recording"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textRecordingStatus" />
-
-        <ImageView
-            android:id="@+id/play_btn"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_50sdp"
-            android:layout_margin="@dimen/_15sdp"
-            android:src="@drawable/play_rec"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textRecordingStatus" />
-
-        <ImageView
-            android:id="@+id/stopBtn"
-            android:layout_width="@dimen/_30sdp"
-            android:layout_height="@dimen/_30sdp"
-            android:layout_margin="@dimen/_15sdp"
-            android:src="@drawable/icon_stop"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/start_btn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/start_btn"
-            app:layout_constraintTop_toTopOf="@+id/start_btn" />
-
-        <ImageView
-            android:id="@+id/deleteBtn"
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_30sdp"
-            android:layout_margin="@dimen/_15sdp"
-            android:padding="@dimen/_2sdp"
-            android:src="@drawable/icon_delete"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/start_btn"
-            app:layout_constraintEnd_toStartOf="@+id/start_btn"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/start_btn"
-            app:tint="@color/iconColor" />
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <TextView
-            android:id="@+id/timeText"
-            android:layout_width="match_parent"
+            android:id="@+id/toolbarSubtitle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_15sdp"
-            android:fontFamily="@font/instasans"
-            android:gravity="center"
-            android:text="@string/_00_00"
-            android:textColor="@color/textColor"
-            android:textSize="@dimen/_15sdp"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="1dp"
+            android:fontFamily="@font/inter_regular"
+            android:text="@string/record_sound_toolbar_subtitle"
+            android:textColor="@color/settings_text_secondary"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/start_btn" />
+            app:layout_constraintStart_toEndOf="@id/backBtn"
+            app:layout_constraintTop_toBottomOf="@id/toolbarTitle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/recordScroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toTopOf="@id/ad_frame"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recordToolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="18dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="224dp"
+                android:background="@drawable/bg_record_sound_hero"
+                android:elevation="6dp"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp">
+
+                <TextView
+                    android:id="@+id/studioBadge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="26dp"
+                    android:layout_marginTop="17dp"
+                    android:background="@drawable/bg_record_sound_badge"
+                    android:fontFamily="@font/inter_semi_bold"
+                    android:gravity="center"
+                    android:letterSpacing="0.09"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:text="@string/record_sound_studio_badge"
+                    android:textColor="@color/white"
+                    android:textSize="9sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textStatus"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/inter_extra_bold"
+                    android:gravity="center"
+                    android:text="@string/record_sound_ready_title"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/studioBadge" />
+
+                <TextView
+                    android:id="@+id/heroDescription"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="12dp"
+                    android:fontFamily="@font/inter_regular"
+                    android:gravity="center"
+                    android:text="@string/record_sound_hero_description"
+                    android:textColor="#DCEBFF"
+                    android:textSize="11sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textStatus" />
+
+                <FrameLayout
+                    android:id="@+id/waveformContainer"
+                    android:layout_width="0dp"
+                    android:layout_height="78dp"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginBottom="17dp"
+                    android:background="@drawable/bg_record_sound_waveform"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/heroDescription">
+
+                    <ImageView
+                        android:id="@+id/wavesImg"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@null"
+                        android:paddingStart="20dp"
+                        android:paddingTop="17dp"
+                        android:paddingEnd="20dp"
+                        android:paddingBottom="17dp"
+                        android:src="@drawable/record_sound_waveform_idle" />
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/waveAnim"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:scaleType="fitXY"
+                        android:visibility="invisible"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true"
+                        app:lottie_rawRes="@raw/record_waves"
+                        app:lottie_speed="1" />
+
+                </FrameLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                app:cardBackgroundColor="@color/settings_surface"
+                app:cardCornerRadius="26dp"
+                app:cardElevation="3dp"
+                app:strokeColor="@color/settings_outline"
+                app:strokeWidth="1dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="18dp"
+                    android:paddingTop="18dp"
+                    android:paddingEnd="18dp"
+                    android:paddingBottom="18dp">
+
+                    <TextView
+                        android:id="@+id/textRecordingStatus"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_medium"
+                        android:gravity="center"
+                        android:lineSpacingExtra="1dp"
+                        android:text="@string/record_sound_ready_hint"
+                        android:textColor="@color/settings_text_secondary"
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/timeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/bg_record_sound_timer"
+                        android:fontFamily="@font/inter_bold"
+                        android:gravity="center"
+                        android:letterSpacing="0.08"
+                        android:minWidth="132dp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="@string/record_sound_timer_zero"
+                        android:textColor="@color/settings_text_primary"
+                        android:textSize="20sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textRecordingStatus" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/recordControls"
+                        android:layout_width="0dp"
+                        android:layout_height="88dp"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/timeText">
+
+                        <FrameLayout
+                            android:id="@+id/deleteBtn"
+                            android:layout_width="52dp"
+                            android:layout_height="52dp"
+                            android:background="@drawable/bg_record_sound_side_button"
+                            android:clickable="true"
+                            android:contentDescription="@string/record_sound_delete_content_description"
+                            android:focusable="true"
+                            android:visibility="invisible"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/start_btn"
+                            app:layout_constraintHorizontal_bias="0.35"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:layout_width="23dp"
+                                android:layout_height="23dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@null"
+                                android:src="@drawable/record_sound_ic_delete" />
+
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/start_btn"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:background="@drawable/bg_record_sound_main_button"
+                            android:clickable="true"
+                            android:contentDescription="@string/record_sound_start_content_description"
+                            android:elevation="5dp"
+                            android:focusable="true"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:layout_width="34dp"
+                                android:layout_height="34dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@null"
+                                android:src="@drawable/record_sound_ic_microphone" />
+
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/pause_btn"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:background="@drawable/bg_record_sound_main_button"
+                            android:clickable="true"
+                            android:contentDescription="@string/record_sound_pause_content_description"
+                            android:elevation="5dp"
+                            android:focusable="true"
+                            android:visibility="invisible"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:layout_width="31dp"
+                                android:layout_height="31dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@null"
+                                android:src="@drawable/record_sound_ic_pause" />
+
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/play_btn"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:background="@drawable/bg_record_sound_main_button"
+                            android:clickable="true"
+                            android:contentDescription="@string/record_sound_resume_content_description"
+                            android:elevation="5dp"
+                            android:focusable="true"
+                            android:visibility="invisible"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@null"
+                                android:src="@drawable/record_sound_ic_resume" />
+
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/stopBtn"
+                            android:layout_width="52dp"
+                            android:layout_height="52dp"
+                            android:background="@drawable/bg_record_sound_side_button"
+                            android:clickable="true"
+                            android:contentDescription="@string/record_sound_finish_content_description"
+                            android:focusable="true"
+                            android:visibility="invisible"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.65"
+                            app:layout_constraintStart_toEndOf="@id/start_btn"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:layout_width="23dp"
+                                android:layout_height="23dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@null"
+                                android:src="@drawable/record_sound_ic_finish" />
+
+                        </FrameLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <LinearLayout
+                        android:id="@+id/recordingTip"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="9dp"
+                        android:background="@drawable/bg_record_sound_tip"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp"
+                        android:paddingTop="9dp"
+                        android:paddingEnd="12dp"
+                        android:paddingBottom="9dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/recordControls">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/record_sound_ic_tip" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="9dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/inter_regular"
+                            android:lineSpacingExtra="1dp"
+                            android:text="@string/record_sound_tip"
+                            android:textColor="@color/settings_blue_deep"
+                            android:textSize="10sp" />
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
     <FrameLayout
         android:id="@+id/ad_frame"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_5sdp"
-        android:background="@color/ad_bg_color"
-        android:padding="@dimen/_2sdp"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bg_record_sound_ad_container"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmer_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@color/shimmer_effect_color">
+            android:background="@android:color/transparent">
 
             <include
                 layout="@layout/admob_native_media_small_layout"
                 android:visibility="invisible" />
+
         </com.facebook.shimmer.ShimmerFrameLayout>
 
     </FrameLayout>

@@ -8,7 +8,6 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,10 +31,6 @@ class LanguageActivity : AppCompatActivity() {
     val isAppFirstTime = MyApplication.mInstance.preferenceManager.getBoolean(
         PreferenceManager.Key.IS_APP_FIRST_TIME,
         true
-    )
-    private var isDarkTheme = MyApplication.mInstance.preferenceManager.getBoolean(
-        PreferenceManager.Key.isDarkTheme,
-        false
     )
     private lateinit var adapter: LanguagesAdapter
 
@@ -77,13 +72,7 @@ class LanguageActivity : AppCompatActivity() {
             }
         })
 
-        if (!MyApplication.mInstance.preferenceManager.getBoolean(
-                PreferenceManager.Key.isDarkTheme,
-                false
-            )
-        ) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        }
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
         initViews()
         initViewModel()
@@ -99,12 +88,6 @@ class LanguageActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        if (isDarkTheme) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
-
         binding.backBtn.setOnClickListener {
             finish()
         }

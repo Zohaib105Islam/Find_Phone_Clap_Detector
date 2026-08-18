@@ -18,7 +18,7 @@ import com.base.find_phone_clap_detector.R
 import com.base.find_phone_clap_detector.managers.PreferenceManager
 import com.base.find_phone_clap_detector.myApplication.MyApplication
 import com.base.find_phone_clap_detector.service.DetectorLog
-import com.base.find_phone_clap_detector.ui.activities.StopSoundAvtivity
+import com.base.find_phone_clap_detector.ui.activities.StopSoundActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -123,7 +123,7 @@ class AlertController(
     }
 
     fun launchStopSoundActivity(clearTop: Boolean) {
-        val intent = Intent(context, StopSoundAvtivity::class.java).apply {
+        val intent = Intent(context, StopSoundActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             if (clearTop) {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)

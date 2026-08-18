@@ -615,7 +615,7 @@ class HomeFragment : Fragment(), SoundInterface {
         val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(false)
-        dialog.setContentView(R.layout.ratting_dialogue)
+        dialog.setContentView(R.layout.rating_dialog)
         val width = (resources.displayMetrics.widthPixels * 0.90).toInt()
         dialog.window?.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
@@ -637,7 +637,7 @@ class HomeFragment : Fragment(), SoundInterface {
             dialog.dismiss()
         }
 
-        val simpleRatingBar: RatingBar = dialog.findViewById(R.id.rattingBar)
+        val simpleRatingBar: RatingBar = dialog.findViewById(R.id.ratingBar)
         simpleRatingBar.onRatingBarChangeListener =
             RatingBar.OnRatingBarChangeListener { _, rating, _ ->
                 if (rating >= 4 && isAdded) {

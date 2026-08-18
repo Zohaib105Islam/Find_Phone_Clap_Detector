@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
@@ -33,7 +34,7 @@ import com.base.find_phone_clap_detector.ui.activities.PremiumFreeTrailActivity
 import com.base.find_phone_clap_detector.ui.activities.PremiumScreenActivity
 import com.base.find_phone_clap_detector.ui.activities.SettingsActivity
 import com.base.find_phone_clap_detector.ui.activities.SplashActivity
-import com.base.find_phone_clap_detector.ui.activities.StopSoundAvtivity
+import com.base.find_phone_clap_detector.ui.activities.StopSoundActivity
 import com.base.find_phone_clap_detector.utils.AppStateTracker
 import com.base.find_phone_clap_detector.utils.RemoteConfigAds
 import dagger.hilt.android.HiltAndroidApp
@@ -77,9 +78,11 @@ class MyApplication: Application(), Application.ActivityLifecycleCallbacks, Life
         }
 
         super.onCreate()
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         Timber.plant(Timber.DebugTree())
         mInstance = this
         mContext = applicationContext
+        preferenceManager.put(PreferenceManager.Key.isDarkTheme, false)
         registerActivityLifecycleCallbacks(this)
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
         appOpenAdManager = AppOpenAdManager()
@@ -127,7 +130,7 @@ class MyApplication: Application(), Application.ActivityLifecycleCallbacks, Life
             is SplashActivity -> {}
             is PremiumScreenActivity -> {}
             is PremiumFreeTrailActivity -> {}
-            is StopSoundAvtivity -> {}
+            is StopSoundActivity -> {}
             else -> {
                 currentActivity.let {
                     if (!isLoadingShown) {

@@ -21,7 +21,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.base.find_phone_clap_detector.R
 import com.base.find_phone_clap_detector.databinding.ActivitySaveRecordingBinding
-import com.base.find_phone_clap_detector.managers.AdsManager
 import com.base.find_phone_clap_detector.managers.PreferenceManager
 import com.base.find_phone_clap_detector.ui.dataClasses.SoundsDataClass
 import com.base.find_phone_clap_detector.utils.DetectorWorkerStarter
@@ -59,18 +58,12 @@ class SaveRecordingActivity : AppCompatActivity() {
             insets
         }
         intiViews()
-        initAds()
         startOrPauseMediaPlayer(filepath)
     }
 
     private fun intiViews() {
-        if (!MyApplication.mInstance.preferenceManager.getBoolean(
-                PreferenceManager.Key.isDarkTheme,
-                false
-            )
-        ) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        }
+        window.statusBarColor = ContextCompat.getColor(this, R.color.backColor)
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
         filepath = intent.getStringExtra("filepath").toString()
         Log.d(TAG, "GETTED_FILE_PATH: $filepath")
@@ -128,17 +121,6 @@ class SaveRecordingActivity : AppCompatActivity() {
             startActivity(Intent(this@SaveRecordingActivity, CreateSoundActivity::class.java))
             finish()
         }
-    }
-
-    private fun initAds() {
-        // loadNativeAd
-        MyApplication.mInstance.adsManager.loadNativeAd(
-            this,
-            binding.adFrame,
-            AdsManager.NativeAdType.MEDIUM_TYPE,
-            this.getString(R.string.ADMOB_NATIVE_WITH_MEDIA_V2),
-            binding.shimmerLayout
-        )
     }
 
     private fun startOrPauseMediaPlayer(filepath: String) {

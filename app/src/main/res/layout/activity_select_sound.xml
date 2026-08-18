@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backColor"
+    android:background="@drawable/main_bg"
     android:id="@+id/main"
     tools:context=".ui.activities.SelectSoundActivity">
 

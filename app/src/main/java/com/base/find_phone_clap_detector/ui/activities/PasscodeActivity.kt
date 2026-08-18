@@ -1,12 +1,10 @@
 package com.base.find_phone_clap_detector.ui.activities
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.base.find_phone_clap_detector.R
@@ -17,7 +15,6 @@ import com.base.find_phone_clap_detector.managers.PreferenceManager.Key
 import com.base.find_phone_clap_detector.myApplication.MyApplication
 import com.base.find_phone_clap_detector.utils.AdsCounter
 import com.base.find_phone_clap_detector.utils.Constants
-import com.base.find_phone_clap_detector.utils.Utils
 import com.base.find_phone_clap_detector.utils.disableMultipleClicking
 
 class PasscodeActivity : AppCompatActivity() {
@@ -75,65 +72,6 @@ class PasscodeActivity : AppCompatActivity() {
 //            }
         }
 
-        binding.themeIcon.setOnClickListener {
-            disableMultipleClicking(it, 1000)
-            if (MyApplication.mInstance.preferenceManager.getBoolean(PreferenceManager.Key.IS_APP_PREMIUM)) {
-                val currentNightMode =
-                    resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-                val isDarkMode = if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
-                    MyApplication.mInstance.preferenceManager.put(
-                        PreferenceManager.Key.isDarkTheme,
-                        false
-                    )
-                    false
-                } else {
-                    MyApplication.mInstance.preferenceManager.put(
-                        PreferenceManager.Key.isDarkTheme,
-                        true
-                    )
-                    true
-                }
-                val newNightMode = if (isDarkMode) {
-                    AppCompatDelegate.MODE_NIGHT_YES
-                } else {
-                    AppCompatDelegate.MODE_NIGHT_NO
-                }
-
-                AppCompatDelegate.setDefaultNightMode(newNightMode)
-                recreate()
-            } else {
-                Utils.watchAdOrBuyPremium(
-                    this@PasscodeActivity,
-                    onBuyPremium = {
-                        startActivity(Intent(this, PremiumScreenActivity::class.java))
-                    }) {
-                    val currentNightMode =
-                        resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-                    val isDarkMode = if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
-                        MyApplication.mInstance.preferenceManager.put(
-                            PreferenceManager.Key.isDarkTheme,
-                            false
-                        )
-                        false
-                    } else {
-                        MyApplication.mInstance.preferenceManager.put(
-                            PreferenceManager.Key.isDarkTheme,
-                            true
-                        )
-                        true
-                    }
-                    val newNightMode = if (isDarkMode) {
-                        AppCompatDelegate.MODE_NIGHT_YES
-                    } else {
-                        AppCompatDelegate.MODE_NIGHT_NO
-                    }
-
-                    AppCompatDelegate.setDefaultNightMode(newNightMode)
-                    recreate()
-                }
-            }
-
-        }
     }
 
     private fun initAds() {

@@ -11,7 +11,6 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
@@ -32,12 +31,6 @@ class SplashActivity : AppCompatActivity() {
     private val binding: ActivitySplashBinding by lazy {
         ActivitySplashBinding.inflate(layoutInflater)
     }
-
-    private var isDarkTheme =
-        MyApplication.mInstance.preferenceManager.getBoolean(
-            PreferenceManager.Key.isDarkTheme,
-            false
-        )
 
     val isAppFirstTime =
         MyApplication.mInstance.preferenceManager.getBoolean(
@@ -74,16 +67,8 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        if (isDarkTheme) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
-
         try {
-            if (!isDarkTheme) {
-                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            }
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -175,7 +160,7 @@ class SplashActivity : AppCompatActivity() {
                     false
                 )
             if (isClapDetected) {
-                startActivity(Intent(this, StopSoundAvtivity::class.java))
+                startActivity(Intent(this, StopSoundActivity::class.java))
                 finish()
             } else {
                 MyApplication.isFirstPremium = true

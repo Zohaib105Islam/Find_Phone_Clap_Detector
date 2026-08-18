@@ -23,18 +23,15 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.RatingBar
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.compose.ui.input.key.Key
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
-import com.google.android.gms.ads.AdSize
 import com.base.find_phone_clap_detector.R
 import com.base.find_phone_clap_detector.databinding.ActivitySettingsBinding
-import com.base.find_phone_clap_detector.managers.AdsManager
 import com.base.find_phone_clap_detector.managers.PreferenceManager
 import com.base.find_phone_clap_detector.utils.DetectorWorkerStarter
 import com.base.find_phone_clap_detector.utils.Language
@@ -52,10 +49,6 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingsBinding
 
     // toggles pref
-    private var isDarkTheme = MyApplication.mInstance.preferenceManager.getBoolean(
-        PreferenceManager.Key.isDarkTheme,
-        false
-    )
     private var isSettingFlashActive = MyApplication.mInstance.preferenceManager.getBoolean(
         PreferenceManager.Key.isFlashActive,
         true
@@ -110,16 +103,16 @@ class SettingsActivity : AppCompatActivity() {
         // Apply current app locale before view inflation
         LocaleHelper.setAppLocale(this)
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(binding.main.id)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            v.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
             insets
         }
         vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator // Initialize vibrator
         initLanguageName()
-        initAds()
         initViews()
         initToggleButtons()
         initGeneralViews()
@@ -140,17 +133,6 @@ class SettingsActivity : AppCompatActivity() {
         ) {
             binding.csPro.gone()
         }
-    }
-
-
-    private fun initAds() {
-        MyApplication.mInstance.adsManager.loadNativeAd(
-            this,
-            binding.adFrame,
-            AdsManager.NativeAdType.MEDIA_SMALL_NEW,
-            this.getString(R.string.ADMOB_NATIVE_WITHOUT_MEDIA_V2),
-            binding.shimmerLayout
-        )
     }
 
     private fun initGeneralViews() {
@@ -227,55 +209,18 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun initToggleButtons() {
-        binding.themeToggleButton.isChecked = isDarkTheme
-        if (isDarkTheme) {
-            binding.themeToggleButton.thumbTintList =
-                ColorStateList.valueOf(resources.getColor(R.color.primary))
-            binding.themeToggleButton.trackTintList =
-                ColorStateList.valueOf(resources.getColor(R.color.light_yellow))
-        } else {
-            binding.themeToggleButton.thumbTintList =
-                ColorStateList.valueOf(resources.getColor(R.color.light_gray))
-            binding.themeToggleButton.trackTintList =
-                ColorStateList.valueOf(resources.getColor(R.color.white))
-        }
-        binding.themeToggleButton.apply {
-            setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    // Switch is ON, change thumb and track color for active state
-                    thumbTintList = ColorStateList.valueOf(resources.getColor(R.color.primary))
-                    trackTintList = ColorStateList.valueOf(resources.getColor(R.color.light_yellow))
-                    MyApplication.mInstance.preferenceManager.put(
-                        PreferenceManager.Key.isDarkTheme,
-                        true
-                    )
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                } else {
-                    // Switch is OFF, change thumb and track color for inactive state
-                    thumbTintList = ColorStateList.valueOf(resources.getColor(R.color.light_gray))
-                    trackTintList = ColorStateList.valueOf(resources.getColor(R.color.white))
-                    MyApplication.mInstance.preferenceManager.put(
-                        PreferenceManager.Key.isDarkTheme,
-                        false
-                    )
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                }
-                recreate()
-            }
-        }
-
         binding.flashToggleButton.isChecked = isSettingFlashActive
         if (isSettingFlashActive) {
             binding.flashToggleButton.thumbTintList =
                 ColorStateList.valueOf(resources.getColor(R.color.primary))
             binding.flashToggleButton.trackTintList =
-                ColorStateList.valueOf(resources.getColor(R.color.light_yellow))
+                ColorStateList.valueOf(resources.getColor(R.color.settings_switch_track_active))
             binding.flashMenuLayout.visibility = View.VISIBLE
         } else {
             binding.flashToggleButton.thumbTintList =
-                ColorStateList.valueOf(resources.getColor(R.color.light_gray))
+                ColorStateList.valueOf(resources.getColor(R.color.settings_switch_thumb_inactive))
             binding.flashToggleButton.trackTintList =
-                ColorStateList.valueOf(resources.getColor(R.color.white))
+                ColorStateList.valueOf(resources.getColor(R.color.settings_switch_track_inactive))
             binding.flashMenuLayout.visibility = View.GONE
         }
         binding.flashToggleButton.apply {
@@ -283,7 +228,7 @@ class SettingsActivity : AppCompatActivity() {
                 if (isChecked) {
                     // Switch is ON, change thumb and track color for active state
                     thumbTintList = ColorStateList.valueOf(resources.getColor(R.color.primary))
-                    trackTintList = ColorStateList.valueOf(resources.getColor(R.color.light_yellow))
+                    trackTintList = ColorStateList.valueOf(resources.getColor(R.color.settings_switch_track_active))
                     MyApplication.mInstance.preferenceManager.put(
                         PreferenceManager.Key.isFlashActive,
                         true
@@ -292,8 +237,8 @@ class SettingsActivity : AppCompatActivity() {
                     binding.flashMenuLayout.visibility = View.VISIBLE
                 } else {
                     // Switch is OFF, change thumb and track color for inactive state
-                    thumbTintList = ColorStateList.valueOf(resources.getColor(R.color.light_gray))
-                    trackTintList = ColorStateList.valueOf(resources.getColor(R.color.white))
+                    thumbTintList = ColorStateList.valueOf(resources.getColor(R.color.settings_switch_thumb_inactive))
+                    trackTintList = ColorStateList.valueOf(resources.getColor(R.color.settings_switch_track_inactive))
                     MyApplication.mInstance.preferenceManager.put(
                         PreferenceManager.Key.isFlashActive,
                         false
@@ -309,13 +254,13 @@ class SettingsActivity : AppCompatActivity() {
             binding.vibrateToggleButton.thumbTintList =
                 ColorStateList.valueOf(resources.getColor(R.color.primary))
             binding.vibrateToggleButton.trackTintList =
-                ColorStateList.valueOf(resources.getColor(R.color.light_yellow))
+                ColorStateList.valueOf(resources.getColor(R.color.settings_switch_track_active))
             binding.vibrationMenuLayout.visibility = View.VISIBLE
         } else {
             binding.vibrateToggleButton.thumbTintList =
-                ColorStateList.valueOf(resources.getColor(R.color.light_gray))
+                ColorStateList.valueOf(resources.getColor(R.color.settings_switch_thumb_inactive))
             binding.vibrateToggleButton.trackTintList =
-                ColorStateList.valueOf(resources.getColor(R.color.white))
+                ColorStateList.valueOf(resources.getColor(R.color.settings_switch_track_inactive))
             binding.vibrationMenuLayout.visibility = View.GONE
         }
         binding.vibrateToggleButton.apply {
@@ -323,7 +268,7 @@ class SettingsActivity : AppCompatActivity() {
                 if (isChecked) {
                     // Switch is ON, change thumb and track color for active state
                     thumbTintList = ColorStateList.valueOf(resources.getColor(R.color.primary))
-                    trackTintList = ColorStateList.valueOf(resources.getColor(R.color.light_yellow))
+                    trackTintList = ColorStateList.valueOf(resources.getColor(R.color.settings_switch_track_active))
                     MyApplication.mInstance.preferenceManager.put(
                         PreferenceManager.Key.isVibrationActive,
                         true
@@ -332,8 +277,8 @@ class SettingsActivity : AppCompatActivity() {
                     binding.vibrationMenuLayout.visibility = View.VISIBLE
                 } else {
                     // Switch is OFF, change thumb and track color for inactive state
-                    thumbTintList = ColorStateList.valueOf(resources.getColor(R.color.light_gray))
-                    trackTintList = ColorStateList.valueOf(resources.getColor(R.color.white))
+                    thumbTintList = ColorStateList.valueOf(resources.getColor(R.color.settings_switch_thumb_inactive))
+                    trackTintList = ColorStateList.valueOf(resources.getColor(R.color.settings_switch_track_inactive))
                     MyApplication.mInstance.preferenceManager.put(
                         PreferenceManager.Key.isVibrationActive,
                         false
@@ -348,13 +293,7 @@ class SettingsActivity : AppCompatActivity() {
     @SuppressLint("SuspiciousIndentation")
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initViews() {
-        if (!MyApplication.mInstance.preferenceManager.getBoolean(
-                PreferenceManager.Key.isDarkTheme,
-                false
-            )
-        ) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        }
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
         binding.backIcon.setOnClickListener {
             finish()
@@ -731,7 +670,7 @@ class SettingsActivity : AppCompatActivity() {
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(false)
-        dialog.setContentView(R.layout.ratting_dialogue)
+        dialog.setContentView(R.layout.rating_dialog)
         val width = (resources.displayMetrics.widthPixels * 0.90).toInt()
         dialog.setCancelable(false)
         dialog.window?.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -752,7 +691,7 @@ class SettingsActivity : AppCompatActivity() {
             dialog.dismiss()
         }
         val simpleRatingBar: RatingBar =
-            dialog.findViewById(R.id.rattingBar) // initiate a rating bar
+            dialog.findViewById(R.id.ratingBar) // initiate a rating bar
         simpleRatingBar.onRatingBarChangeListener =
             RatingBar.OnRatingBarChangeListener { _, rating, _ ->
                 // Called when the user swipes the RatingBar

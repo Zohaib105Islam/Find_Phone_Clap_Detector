@@ -63,13 +63,7 @@ class OnBoardingActivity : AppCompatActivity() {
     }
 
     private fun setupTheme() {
-        if (!MyApplication.mInstance.preferenceManager.getBoolean(
-                PreferenceManager.Key.isDarkTheme,
-                false
-            )
-        ) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        }
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
     }
 
     private fun initClicks() {

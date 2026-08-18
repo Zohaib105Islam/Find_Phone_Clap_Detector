@@ -11,7 +11,6 @@ import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -36,8 +35,6 @@ class TutorialActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivityTutorialBinding.inflate(layoutInflater)
     }
-    private var isDarkTheme = MyApplication.mInstance.preferenceManager.getBoolean(PreferenceManager.Key.isDarkTheme , false)
-
     private val audioSource = MediaRecorder.AudioSource.MIC
     private val sampleRate = 44100
     private val channelConfig = AudioFormat.CHANNEL_IN_MONO
@@ -62,9 +59,7 @@ class TutorialActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        if (!MyApplication.mInstance.preferenceManager.getBoolean(PreferenceManager.Key.isDarkTheme , false)){
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        }
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         initViews()
         startDetectClap()
         initAds()
@@ -190,12 +185,6 @@ class TutorialActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        if (isDarkTheme){
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
-
         binding.apply {
 skipBtn.setOnClickListener {
     gotoMainActivity()

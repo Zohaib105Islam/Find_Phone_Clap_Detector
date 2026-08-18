@@ -73,7 +73,7 @@
             android:name=".ui.activities.PremiumScreenActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activities.StopSoundAvtivity"
+            android:name=".ui.activities.StopSoundActivity"
             android:exported="false"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />

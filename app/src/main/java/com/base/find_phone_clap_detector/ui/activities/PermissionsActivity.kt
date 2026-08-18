@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.base.find_phone_clap_detector.R
@@ -26,8 +25,6 @@ class PermissionsActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivityPermissionsBinding.inflate(layoutInflater)
     }
-    private var isDarkTheme = MyApplication.mInstance.preferenceManager.getBoolean(PreferenceManager.Key.isDarkTheme , false)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         // Apply current app locale before view inflation
         LocaleHelper.setAppLocale(this)
@@ -38,19 +35,11 @@ class PermissionsActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        if (!MyApplication.mInstance.preferenceManager.getBoolean(PreferenceManager.Key.isDarkTheme , false)){
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        }
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         initViews()
     }
 
     private fun initViews() {
-        if (isDarkTheme){
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
-
         binding.apply {}
     }
 

@@ -7,14 +7,14 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/backColor"
+        android:background="@drawable/main_bg"
         tools:context=".ui.activities.MainActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/backColor"
+            android:background="@android:color/transparent"
             android:layoutDirection="locale"
             android:paddingHorizontal="@dimen/_10sdp"
             android:paddingTop="@dimen/_5sdp"

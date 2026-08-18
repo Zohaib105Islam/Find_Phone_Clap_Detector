@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="CustomDialog" parent="Theme.Material3.DayNight.Dialog">
+    <style name="CustomDialog" parent="Theme.Material3.Light.Dialog">
         <!-- No default title -->
         <item name="android:windowNoTitle">true</item>
         <!-- Background dim when dialog shows -->
@@ -16,6 +16,12 @@
         <item name="android:windowMinWidthMajor">80%</item>
         <item name="android:windowMinWidthMinor">80%</item>
         <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="RatingBarBlue" parent="ThemeOverlay.AppCompat">
+        <item name="colorControlNormal">#C8D9F3</item>
+        <item name="colorControlActivated">@color/settings_blue</item>
+        <item name="colorControlHighlight">#99BFF8</item>
     </style>
 
 

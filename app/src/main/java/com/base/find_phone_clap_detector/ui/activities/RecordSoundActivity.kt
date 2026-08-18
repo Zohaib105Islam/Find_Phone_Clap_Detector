@@ -48,8 +48,8 @@ class RecordSoundActivity : AppCompatActivity() {
                     waveAnim.visibility = View.VISIBLE
                     deleteBtn.visibility = View.VISIBLE
                     stopBtn.visibility = View.VISIBLE
-                    textStatus.text = getString(R.string.recording_sound_programatically)
-                    textRecordingStatus.text = getString(R.string.tap_to_stop_recording_programatically)
+                    textStatus.text = getString(R.string.record_sound_recording_title)
+                    textRecordingStatus.text = getString(R.string.record_sound_recording_hint)
                 }
                 try {
                     viewModel.startRecording()
@@ -86,7 +86,8 @@ class RecordSoundActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        window.statusBarColor = ContextCompat.getColor(this, R.color.appClr)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.backColor)
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
         viewModel = ViewModelProvider(this)[RecordingViewModel::class.java]
         viewModel.filePath.observe(this){
@@ -104,6 +105,8 @@ class RecordSoundActivity : AppCompatActivity() {
         binding.pauseBtn.setOnClickListener {
             binding.pauseBtn.visibility = View.INVISIBLE
             binding.playBtn.visibility = View.VISIBLE
+            binding.textStatus.text = getString(R.string.record_sound_paused_title)
+            binding.textRecordingStatus.text = getString(R.string.record_sound_paused_hint)
 
             try {
                 viewModel.pauseRecording()
@@ -115,6 +118,8 @@ class RecordSoundActivity : AppCompatActivity() {
         binding.playBtn.setOnClickListener {
             binding.pauseBtn.visibility = View.VISIBLE
             binding.playBtn.visibility = View.INVISIBLE
+            binding.textStatus.text = getString(R.string.record_sound_recording_title)
+            binding.textRecordingStatus.text = getString(R.string.record_sound_recording_hint)
 
             try {
                 viewModel.resumeRecording()
@@ -135,8 +140,8 @@ class RecordSoundActivity : AppCompatActivity() {
             binding.deleteBtn.visibility = View.INVISIBLE
             binding.stopBtn.visibility = View.INVISIBLE
 
-            binding.textStatus.text = getString(R.string.recording_sound_programatically)
-            binding.textRecordingStatus.text = getString(R.string.tap_to_stop_recording_programatically)
+            binding.textStatus.text = getString(R.string.record_sound_ready_title)
+            binding.textRecordingStatus.text = getString(R.string.record_sound_ready_hint)
 
             try {
                 viewModel.stopRecording()
@@ -159,8 +164,8 @@ class RecordSoundActivity : AppCompatActivity() {
             binding.deleteBtn.visibility = View.INVISIBLE
             binding.stopBtn.visibility = View.INVISIBLE
 
-            binding.textStatus.text = getString(R.string.record_sound)
-            binding.textRecordingStatus.text = getString(R.string.tap_to_start_recording)
+            binding.textStatus.text = getString(R.string.record_sound_ready_title)
+            binding.textRecordingStatus.text = getString(R.string.record_sound_ready_hint)
 
             try {
                 viewModel.stopRecording()
@@ -195,7 +200,7 @@ class RecordSoundActivity : AppCompatActivity() {
         val dialog = Dialog(requireActivity)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(false)
-        dialog.setContentView(R.layout.setting_dialogue)
+        dialog.setContentView(R.layout.record_sound_permission_dialog)
 
         val width = (requireActivity.resources.displayMetrics.widthPixels * 0.90).toInt()
         dialog.window?.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)

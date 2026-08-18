@@ -77,5 +77,21 @@
     <color name="sound_preview_chip_inactive">#EDF4FF</color>
     <color name="sound_preview_track_off">#C9D8EE</color>
 
+    <!-- Settings redesign -->
+    <color name="settings_background">#F3F7FF</color>
+    <color name="settings_surface">#FFFFFFFF</color>
+    <color name="settings_surface_soft">#EDF4FF</color>
+    <color name="settings_surface_strong">#DDEBFF</color>
+    <color name="settings_text_primary">#102A56</color>
+    <color name="settings_text_secondary">#64748B</color>
+    <color name="settings_blue">#2563EB</color>
+    <color name="settings_blue_deep">#1746A2</color>
+    <color name="settings_blue_light">#60A5FA</color>
+    <color name="settings_outline">#D8E6FC</color>
+    <color name="settings_divider">#E4EDFA</color>
+    <color name="settings_switch_track_active">#BFD7FF</color>
+    <color name="settings_switch_track_inactive">#DDE7F5</color>
+    <color name="settings_switch_thumb_inactive">#7890B1</color>
+
 
 </resources>
